@@ -35,9 +35,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
    selectImage() async {
-      Uint8List im = await pickImage(ImageSource.gallery);
+      Uint8List? im = await pickImage(ImageSource.gallery);
       setState(() {
-        _image =im;
+        _image = im;
       });
   }
 
@@ -146,7 +146,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               ),
 
               const SizedBox(
-                height: 12,
+                height: 8,
               ),
               Flexible(child: Container(),flex: 2),
               //Transitioning to signin
