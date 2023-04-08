@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/utils/colour.dart';
+import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
 
 
@@ -22,6 +24,30 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+  }
+
+  void loginUser() async {
+    setState(() {
+      _isLoading = true;
+    });
+    String res = await AuthMethods().loginUser(
+      email: _emailController.text,
+      password:_passwordController.text,
+    );
+    if(res == "success"){
+      // setState(() {
+      //   _isLoading = false;
+      // });
+
+    }else{
+      // setState(() {
+      //   _isLoading = false;
+      // });
+      showSnakBar(res, context);
+    }
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   @override
@@ -61,9 +87,13 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               //button login
               InkWell(
-                onTap: () {},
-                child: Container(
-                child: const Text('Log in'),
+                onTap:  loginUser,
+                child:  Container(
+                child: _isLoading ? const Center(child: CircularProgressIndicator(
+                  color: primaryColor,
+                ),
+                )
+                : const Text('Log in'),
                 width: double.infinity,
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(vertical: 12),
