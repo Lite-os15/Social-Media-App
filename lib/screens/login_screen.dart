@@ -52,12 +52,15 @@ class _LoginScreenState extends State<LoginScreen> {
        setState(() {
          _isLoading = false;
        });
+      // ignore: use_build_context_synchronously
       showSnakBar(res, context );
     }
     // setState(() {
     //   _isLoading = false;
     // });
+
   }
+
   void navigateToSignup(){
     Navigator.of(context ).push(MaterialPageRoute(builder: (context) => const SignUpScreen(),
     )
