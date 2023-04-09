@@ -6,6 +6,7 @@ import 'package:instagram_clone/resources/auth_methods.dart';
 import 'package:instagram_clone/responsive/mobile_screen_layout.dart';
 import 'package:instagram_clone/responsive/responsive_screen_layout.dart';
 import 'package:instagram_clone/responsive/web_screen_layout.dart';
+import 'package:instagram_clone/screens/home_screen.dart';
 import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/utils/colour.dart';
 import 'package:instagram_clone/utils/utils.dart';
@@ -27,6 +28,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController _usernameController = TextEditingController();
   bool _isLoading = false;
   Uint8List? _image;
+  final _formKey = GlobalKey<FormState>();
 
 
   @override
@@ -37,7 +39,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _usernameController.dispose();
   }
 
-  void signUpUser() async {
+  Future<String> signUpUser() async {
     // set loading to true
     setState(() {
       _isLoading = true;
@@ -57,22 +59,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
         _isLoading = false;
       });
       // navigate to the home screen
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const ResponsiveLayout(
-            mobileScreenLayout: MobileScreenLayout(),
-            webScreenLayout: WebScreenLayout(),
-          ),
-        ),
-      );
+      // Navigator.of(context).pushReplacement(
+      //   MaterialPageRoute(
+      //     builder: (context) => const ResponsiveLayout(
+      //       mobileScreenLayout: MobileScreenLayout(),
+      //       webScreenLayout: WebScreenLayout(),
+      //     ),
+      //   ),
+      // );
     } else {
       setState(() {
         _isLoading = false;
       });
       // show the error
       // ignore: use_build_context_synchronously
-      showSnakBar(res, context);
+      showSnackBar(res, context);
     }
+
+    return res;
   }
 
   selectImage() async {
@@ -136,31 +140,46 @@ class _SignUpScreenState extends State<SignUpScreen> {
                ),
               const SizedBox(height: 24,
               ),
+              Form(child: Column(
+                key: _formKey,
+                children: [
+                  TextFormField(controller: _usernameController,
+                    decoration: InputDecoration(
+                      hintText: 'Enter your username',
+                    ),
+                    validator: (value) {
+                    if(value == null)
+                      {
+                        return 'please enter username';
+                      }
+                    },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+
+                  //text field input for email
+                  TextFormField(controller: _emailController,
+                    decoration: InputDecoration(
+                      hintText: 'Enter email'
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+
+                  //text field input for password
+                  TextFormField(controller: _passwordController,
+                    decoration: InputDecoration(
+                      hintText: 'Enter Password'
+                    ),
+                     //validator: ,
+                  ),
+                ],
+              ),),
 
               //text field input for username
-              TextFieldInput(textEditingController: _usernameController,
-                hintText: 'Enter your username',
-                textInputType: TextInputType.text,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
 
-              //text field input for email
-              TextFieldInput(textEditingController: _emailController,
-                hintText: 'Enter your email',
-                textInputType: TextInputType.emailAddress,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-
-              //text field input for password
-              TextFieldInput(textEditingController: _passwordController,
-                hintText: 'Enter your Password',
-                textInputType: TextInputType.text,
-                isPass: true,
-              ),
               const SizedBox(
                 height: 20,
               ),
@@ -172,29 +191,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 height: 24,
               ),
               //button login
-              InkWell(
-                 onTap: signUpUser,
-                child: Container(
+              ElevatedButton(onPressed: () {
+                var result = signUpUser();
 
-                  width: double.infinity,
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  decoration: const ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(15),
-                      ),
-                    ),
-                    color: Colors.blue,
-                  ),
-
-                  child: _isLoading ? const Center(child: CircularProgressIndicator(
-                    color: primaryColor,
-                  ),
-                  )
-                  :const Text('Sign up'),
-                ),
-              ),
+                if(result == 'success'){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomeScreen()));
+                }
+              }, child: Text('Sign up')),
 
               const SizedBox(
                 height: 8,

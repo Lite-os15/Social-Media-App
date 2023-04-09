@@ -42,4 +42,5 @@ class User {
     "followers": followers,
     "following": following,
   };
+
 }
