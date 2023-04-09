@@ -3,10 +3,13 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
+import 'package:instagram_clone/responsive/mobile_screen_layout.dart';
+import 'package:instagram_clone/responsive/responsive_screen_layout.dart';
+import 'package:instagram_clone/responsive/web_screen_layout.dart';
+import 'package:instagram_clone/screens/login_screen.dart';
 import 'package:instagram_clone/utils/colour.dart';
 import 'package:instagram_clone/utils/utils.dart';
 // import 'package:flutter_svg/flutter_svg.dart';
-// import 'package:instagram_clone/utils/colour.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
 
 
@@ -28,13 +31,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _bioController.dispose();
     _usernameController.dispose();
   }
+
   void signUpUser() async {
     // set loading to true
     setState(() {
@@ -47,37 +49,48 @@ class _SignUpScreenState extends State<SignUpScreen> {
         password: _passwordController.text,
         username: _usernameController.text,
         bio: _bioController.text,
-        file: _image!);
+         file: _image!
+        );
     // if string returned is sucess, user has been created
     if (res == "success") {
       setState(() {
         _isLoading = false;
       });
-      // // navigate to the home screen
-      // Navigator.of(context).pushReplacement(
-      //   MaterialPageRoute(
-      //     builder: (context) => const ResponsiveLayout(
-      //       mobileScreenLayout: MobileScreenLayout(),
-      //       webScreenLayout: WebScreenLayout(),
-      //     ),
-      //   ),
-      // );
+      // navigate to the home screen
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            mobileScreenLayout: MobileScreenLayout(),
+            webScreenLayout: WebScreenLayout(),
+          ),
+        ),
+      );
     } else {
       setState(() {
         _isLoading = false;
       });
       // show the error
+      // ignore: use_build_context_synchronously
       showSnakBar(res, context);
     }
   }
 
   selectImage() async {
-    Uint8List im = await pickImage(ImageSource.camera);
+    Uint8List im = await pickImage(ImageSource.gallery);
     // set state because we need to display the image we selected on the circle avatar
     setState(() {
       _image = im;
     });
   }
+
+
+  // ImagePicker() async {
+  //   Uint8List im = await pickImage(ImageSource.gallery);
+  //   // set state because we need to display the image we selected on the circle avatar
+  //   setState(() {
+  //     _image = im;
+  //   });
+  // }
 
 
   @override
@@ -112,8 +125,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                            ),
                    Positioned(bottom: -10,
                        left: 80,
-                       child: IconButton(onPressed: (){},
+                       child:
+                       IconButton(
+                         onPressed: selectImage ,
                          icon:const Icon(Icons.add_a_photo)
+
                          ,)
                    ),
                  ],
@@ -196,7 +212,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
 
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ),
+                    ),
 
                     child: Container(
                       child: const Text("Log in.",

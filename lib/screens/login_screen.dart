@@ -1,6 +1,11 @@
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram_clone/resources/auth_methods.dart';
+import 'package:instagram_clone/responsive/mobile_screen_layout.dart';
+import 'package:instagram_clone/responsive/responsive_screen_layout.dart';
+import 'package:instagram_clone/responsive/web_screen_layout.dart';
+import 'package:instagram_clone/screens/signup_screen.dart';
 import 'package:instagram_clone/utils/colour.dart';
 import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
@@ -35,19 +40,28 @@ class _LoginScreenState extends State<LoginScreen> {
       password:_passwordController.text,
     );
     if(res == "success"){
-      // setState(() {
-      //   _isLoading = false;
-      // });
-
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ResponsiveLayout(
+            mobileScreenLayout: MobileScreenLayout(),
+            webScreenLayout: WebScreenLayout(),
+          ),
+        ),
+      );
     }else{
-      // setState(() {
-      //   _isLoading = false;
-      // });
-      showSnakBar(res, context);
+       setState(() {
+         _isLoading = false;
+       });
+      showSnakBar(res, context );
     }
-    setState(() {
-      _isLoading = false;
-    });
+    // setState(() {
+    //   _isLoading = false;
+    // });
+  }
+  void navigateToSignup(){
+    Navigator.of(context ).push(MaterialPageRoute(builder: (context) => const SignUpScreen(),
+    )
+    );
   }
 
   @override
@@ -89,11 +103,6 @@ class _LoginScreenState extends State<LoginScreen> {
               InkWell(
                 onTap:  loginUser,
                 child:  Container(
-                child: _isLoading ? const Center(child: CircularProgressIndicator(
-                  color: primaryColor,
-                ),
-                )
-                : const Text('Log in'),
                 width: double.infinity,
                 alignment: Alignment.center,
                 padding: const EdgeInsets.symmetric(vertical: 12),
@@ -104,6 +113,11 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 ),
                   color: Colors.blue,),
+                child: _isLoading ? const Center(child: CircularProgressIndicator(
+                  color: primaryColor,
+                ),
+                )
+                : const Text('Log in'),
                 ),
                 ),
 
@@ -123,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
 
                     GestureDetector(
-                     onTap: () {},
+                     onTap: navigateToSignup ,
 
                      child: Container(
                      child: const Text("Sign up.",
