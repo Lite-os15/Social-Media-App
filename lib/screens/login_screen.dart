@@ -25,7 +25,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
+
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
@@ -74,85 +74,87 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children:  [
-              Flexible(child: Container(),flex: 2),
-              //svg image
-              // Image.asset('assets/images/button1.png',color: primaryColor,height: 64,),
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children:  [
+                SizedBox(height: 200,),
+                // Flexible(child: Container(),flex: 2),
+                //svg image
+                // Image.asset('assets/images/button1.png',color: primaryColor,height: 64,),
 
-              const SizedBox(height: 64,
-              ),
 
-              //text field input for email
-              TextFieldInput(textEditingController: _emailController,
-                  hintText: 'Enter your email',
-                  textInputType: TextInputType.emailAddress,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
 
-              //text field input for password
-              TextFieldInput(textEditingController: _passwordController,
-                hintText: 'Enter your Password',
-                textInputType: TextInputType.text,
-                isPass: true,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              //button login
-              InkWell(
-                onTap:  loginUser,
-                child:  Container(
-                width: double.infinity,
-                alignment: Alignment.center,
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                decoration: const ShapeDecoration(
-                  shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(15),
+                //text field input for email
+                TextFieldInput(textEditingController: _emailController,
+                    hintText: 'Enter your email',
+                    textInputType: TextInputType.emailAddress,
                 ),
-                ),
-                  color: Colors.blue,),
-                child: _isLoading ? const Center(child: CircularProgressIndicator(
-                  color: primaryColor,
-                ),
-                )
-                : const Text('Log in'),
-                ),
+                const SizedBox(
+                  height: 20,
                 ),
 
-              const SizedBox(
-                height: 12,
-              ),
-              Flexible(child: Container(),flex: 2),
-              //Transitioning to signin
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                Container(
-                      child: const Text("New User?"),
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 8,
+                //text field input for password
+                TextFieldInput(textEditingController: _passwordController,
+                  hintText: 'Enter your Password',
+                  textInputType: TextInputType.text,
+                  isPass: true,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                //button login
+                InkWell(
+                  onTap:  loginUser,
+                  child:  Container(
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: const ShapeDecoration(
+                    shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(15),
+                  ),
+                  ),
+                    color: Colors.blue,),
+                  child: _isLoading ? const Center(child: CircularProgressIndicator(
+                    color: primaryColor,
+                  ),
+                  )
+                  : const Text('Log in'),
+                  ),
+                  ),
+
+                const SizedBox(
+                  height: 12,
+                ),
+                // Flexible(child: Container(),flex: 2),
+                //Transitioning to signin
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                  Container(
+                        child: const Text("New User?"),
+                        padding: const EdgeInsets.symmetric(
+                          vertical: 8,
+                        ),
                       ),
-                    ),
 
-                    GestureDetector(
-                     onTap: navigateToSignup ,
+                      GestureDetector(
+                       onTap: navigateToSignup ,
 
-                     child: Container(
-                     child: const Text("Sign up.",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold
+                       child: Container(
+                       child: const Text("Sign up.",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold
+                        ),
+                       ),
+                       ),
                       ),
-                     ),
-                     ),
-                    ),
-                  ],
-              ),
-            ],
+                    ],
+                ),
+              ],
+            ),
           ),
         ),
       ),

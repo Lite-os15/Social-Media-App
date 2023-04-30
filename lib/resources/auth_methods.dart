@@ -1,23 +1,30 @@
 import 'dart:typed_data';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:instagram_clone/models/user.dart'  as model;
+import 'package:instagram_clone/models/user.dart';
 import 'package:instagram_clone/resources/storage_methods.dart';
 
 class AuthMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
- // get user details
-  Future<model.User> getUserDetails() async {
-    User currentUser = _auth.currentUser!;
 
-    DocumentSnapshot snap =await _firestore.collection('users').doc(currentUser.uid).get();
+  // get user details
+  Future<UserModel?> getUserDetails() async {
+    User? currentUser = _auth.currentUser!;
 
-    return model.User.fromSnap(snap);
+    if (currentUser == null) {
+      throw Exception("User not found");
+    }
+
+    DocumentSnapshot documentSnapshot =
+    await FirebaseFirestore.instance.collection('users').doc(currentUser.uid).get();
+
+
+    return UserModel.fromSnap(documentSnapshot);
   }
-  //signup user
 
+  // Signing Up User
 
   Future<String> signUpUser({
     required String email,
@@ -31,8 +38,7 @@ class AuthMethods {
       if (email.isNotEmpty ||
           password.isNotEmpty ||
           username.isNotEmpty ||
-          bio.isNotEmpty ||
-          file != null) {
+          bio.isNotEmpty) {
         // registering user in auth with email and password
         UserCredential cred = await _auth.createUserWithEmailAndPassword(
           email: email,
@@ -42,7 +48,7 @@ class AuthMethods {
         String photoUrl = await StorageMethods()
             .uploadImageToStorage('profilePics', file, false);
 
-        model.User _user = model.User(
+        UserModel _user = UserModel(
           username: username,
           uid: cred.user!.uid,
           photoUrl: photoUrl,

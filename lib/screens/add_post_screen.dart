@@ -1,151 +1,132 @@
-import 'package:camera/camera.dart';
-import 'package:flutter/material.dart';
-import 'package:instagram_clone/screens/home_screen.dart';
-import 'package:instagram_clone/utils/colour.dart';
+import 'dart:io';
 
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:instagram_clone/models/user.dart';
+import 'package:instagram_clone/providers/user_provider.dart';
+import 'package:provider/provider.dart';
 
 
 class AddPostScreen extends StatefulWidget {
-  const AddPostScreen({Key? key}) : super(key: key);
+  var CameraPic;
+  var Address;
+  AddPostScreen({Key? key, required this.CameraPic, required this.Address})
+      : super(key: key);
 
   @override
-  State<AddPostScreen> createState() => _AddPostScreenState();
+  State<AddPostScreen> createState() => _AddPostScreenState(CameraPic, Address);
 }
 
 class _AddPostScreenState extends State<AddPostScreen> {
-  late List<CameraDescription> cameras;
-  late CameraController cameraController;
-  int direction = 0;
+  var CameraPic;
+  var Address;
+  final TextEditingController  _descriptionController =TextEditingController();
+  _AddPostScreenState(this.CameraPic, this.Address);
 
-  @override
-  void initState() {
-    startCamera(0);
-    super.initState();
+  void postImage(
+      String uid,
+      String username,
+      String profImage,
+      )async{
+     try {
 
+     }catch(e){
+
+     }
   }
-
-
-  void startCamera(int directon) async {
-    cameras = await availableCameras();
-
-    cameraController = CameraController(
-        cameras[direction],
-        ResolutionPreset.high,
-        enableAudio: false,
-    );
-    await cameraController.initialize().then((value){
-      if(!mounted){
-        return;
-      }
-      setState(() {}); //To refresh Widget
-    }).catchError((e){
-      print(e);
-    });
-  }
-  @override
-  void dispose() {
-    cameraController.dispose();
-    super.dispose();
-  }
-
-
-
-
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+    final UserModel? user =Provider.of<UserProvider>(context).getUser;
 
-
-    if(cameraController.value.isInitialized) {
-      return Scaffold(
-        body: Stack(
-          children: [
-            CameraPreview(cameraController),
-            GestureDetector(
-              onTap: (){
-                setState(() {
-                  direction = direction == 0 ? 1:0;
-                  startCamera(direction);
-                });
-              },
-                child: button(Icons.flip_camera_ios_outlined, Alignment.bottomLeft)
-            ),
-            GestureDetector(
-                onTap: (){cameraController.takePicture().then((XFile? file){
-                      if(mounted){
-                        if(file !=null){
-                          print("Print saved to ${file.path}");
-                        }
-                      }
-
-                });
-                },
-                child: button(Icons.camera_alt_outlined, Alignment.bottomCenter)
-            ),
-
-
-
-          ],
-        ),
-
-        // appBar: AppBar(
-        //   title: Text("Post to "),
-        //   actions: <Widget>[
-        //     TextButton(
-        // style:
-        // ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.red),
-        // ),
-        //
-        //     onPressed:() =>  Navigator.of(context).push(
-        //   MaterialPageRoute(
-        //     builder: (context) => const HomeScreen(),
-        //   ),
-        // ),
-        //       child: Text("Post"),
-        //     ),
-        //   ],
-        // ),
-
-          );
-    }else{
-      return const SizedBox();
-    }
-      }
-  Widget button(IconData icon,Alignment alignment){
-    return  Align(
-      alignment: alignment,
-      child: Container(
-        margin:  const EdgeInsets.only(
-          left: 20,
-          bottom: 20,
-        ),
-        height: 50,
-        width: 50,
-        decoration: const BoxDecoration(
-            shape: BoxShape.circle,
-            color: Colors.white,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black26,
-                offset: Offset(2, 2),
-                blurRadius: 10,
-              )
-            ]
-        ),
-        child: Center(
-          child: Icon(
-            icon,
-            color:Colors.black ,
-
-
+    return Scaffold(
+      appBar: AppBar(
+        
+        title: const Text('Create Post'),
+        
+        actions: [
+          TextButton(
+              onPressed: (){},
+              child: Text('POST',style: TextStyle(color: Colors.white)
+          )
           ),
-        ),
+        ],
       ),
+       body:
+      Column(
+        children: [
+          Row(
+          children:<Widget>[
+            const Align(heightFactor: 0,
+              child: Align(alignment: Alignment.topLeft,
+                child: CircleAvatar(radius: 30,
+                  backgroundColor: Colors.greenAccent,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(alignment: Alignment.topCenter,
+                width: MediaQuery.of(context).size.width * 0.8,
+                child: TextField(
+                  controller: _descriptionController,
+                  decoration: const InputDecoration(
+                    hintText: "Describe the Issue!!!",
+                     focusedBorder: OutlineInputBorder() ,
+                  ),
+
+                ),
+              ),
+            ),
+          ]
+           ),
+
+
+          const Divider(),
+
+          Container(
+            height: size.height /2.2,
+            color: Colors.pinkAccent,
+            child: Image.file(File(CameraPic.path)),
+          ),
+          
+          Container(
+            child: Chip(
+              
+              avatar: const Icon(Icons.location_on_outlined),
+              label: Text(Address),labelStyle: TextStyle(color: Colors.black87),
+            ),
+          ),
+          
+          
+          
+          
+         ],
+        
+    ),
+
+
+
+
+
+
+      // Column(
+      //   children:[
+      //     Container(
+      //         width: double.infinity,
+      //         height: 200,
+      //         child: Image.file(File(CameraPic.path))),
+      //      Text(Address)
+      //   ],
+      //  ),
+
+     // ),
     );
-
-
-
-
   }
-
+  @override
+  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+    super.debugFillProperties(properties);
+    properties.add(DiagnosticsProperty('CameraPic', CameraPic));
   }
+}

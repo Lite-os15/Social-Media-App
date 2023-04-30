@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Instagram',
         theme: ThemeData.light().copyWith(
-          scaffoldBackgroundColor: primaryColor ,
+          scaffoldBackgroundColor: primaryColor    ,
         ),
 
        // home:  const ResponsiveLayout(mobileScreenLayout: MobileScreenLayout(), webScreenLayout: WebScreenLayout()),

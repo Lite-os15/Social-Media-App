@@ -25,7 +25,7 @@ class StorageMethods {
     UploadTask uploadTask = ref.putData(file);
 
      TaskSnapshot snap = await uploadTask;
-      String downloadUrl = snap.ref.getDownloadURL() as String;
+      String downloadUrl = await snap.ref.getDownloadURL() ;
       return downloadUrl;
   }
 }

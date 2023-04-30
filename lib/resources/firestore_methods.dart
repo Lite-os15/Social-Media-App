@@ -26,6 +26,7 @@ class FireStoreMethods {
         datePublished: DateTime.now(),
         postUrl: photoUrl,
         profImage: profImage,
+        address: 'address',
       );
       _firestore.collection('posts').doc(postId).set(post.toJson());
       res = "success";
