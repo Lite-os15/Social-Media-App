@@ -1,15 +1,22 @@
 import 'dart:io';
 
+import 'package:camera/camera.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/models/user.dart';
 import 'package:instagram_clone/providers/user_provider.dart';
+import 'package:instagram_clone/resources/firestore_methods.dart';
+import 'package:instagram_clone/screens/feed_screen.dart';
+import 'package:instagram_clone/utils/utils.dart';
 import 'package:provider/provider.dart';
 
 
 class AddPostScreen extends StatefulWidget {
-  var CameraPic;
-  var Address;
+  // var CameraPic;
+  // var Address;
+  final XFile CameraPic;
+  final String Address;
+
   AddPostScreen({Key? key, required this.CameraPic, required this.Address})
       : super(key: key);
 
@@ -23,18 +30,52 @@ class _AddPostScreenState extends State<AddPostScreen> {
   final TextEditingController  _descriptionController =TextEditingController();
   _AddPostScreenState(this.CameraPic, this.Address);
 
+  Uint8List? _imageData;
+
+  Future<void> _readFile() async {
+    final file = File(CameraPic.path);
+    _imageData = await file.readAsBytes();
+  }
+
+  // List<int> bytes = File(CameraPic).readAsBytesSync();
   void postImage(
       String uid,
       String username,
       String profImage,
+      String Address,
+      Uint8List? imageData,
       )async{
      try {
+       if (_imageData != null) {
+          // Uint8List imageData = await file.readAsBytes();
+        // read file contents into Uint8List
+       String res = await FireStoreMethods().uploadPost(
+         _descriptionController.text,
+         imageData!,
+         uid,
+         username,
+         profImage,
+         Address,
+       );
+       if (res == "success") {
+         showSnackBar('Posted!', context);
+       } else {
+         showSnackBar(res, context);
+       }
+     }else{
+       showSnackBar('File is null', context);
+    }
 
      }catch(e){
-
+       showSnackBar(e.toString(), context);
      }
   }
-
+  @override
+  void initState() {
+    super.initState();
+    _imageData = Uint8List(0);
+    _readFile();
+  }
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -47,8 +88,15 @@ class _AddPostScreenState extends State<AddPostScreen> {
         
         actions: [
           TextButton(
-              onPressed: (){},
-              child: Text('POST',style: TextStyle(color: Colors.white)
+              onPressed:  ()  => postImage(
+                user!.uid,
+                user.username,
+                user.photoUrl,
+                widget.Address,
+                _imageData,
+
+    ),
+              child: const Text('POST',style: TextStyle(color: Colors.white)
           )
           ),
         ],
@@ -93,7 +141,6 @@ class _AddPostScreenState extends State<AddPostScreen> {
           
           Container(
             child: Chip(
-              
               avatar: const Icon(Icons.location_on_outlined),
               label: Text(Address),labelStyle: TextStyle(color: Colors.black87),
             ),

@@ -20,16 +20,18 @@ class FeedScreen extends StatelessWidget {
           title: Text('Lets Change'),
             //color: primaryColor,
             //height: 32,
-          ),
+           ),
 
-            // IconButton(
-            //   icon: const Icon(
-            //     Icons.messenger_outline,
-            //     color: primaryColor,
+            // Container(
+            //   child: IconButton(
+            //     icon: const Icon(
+            //       Icons.messenger_outline,
+            //       color: primaryColor,
+            //     ),
+            //     onPressed: () {},
             //   ),
-            //   onPressed: () {},
             // ),
-            //
+
 
 
     body: StreamBuilder(

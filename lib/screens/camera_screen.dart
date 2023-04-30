@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -136,9 +138,42 @@ class _CameraScreenState extends State<CameraScreen> {
                 child: button(Icons.flip_camera_ios_outlined, Alignment.bottomLeft)
             ),
             GestureDetector(
-                onTap: () async {
+                 // onTap:() async {
+                 //   try {
+                 //     // Capture image and get the XFile
+                 //     XFile? capturedImage = await cameraController.takePicture();
+                 //
+                 //     // Read the image data as bytes from the file
+                 //     Uint8List imageData = await capturedImage.readAsBytes();
+                 //
+                 //     // Get the location data
+                 //     Position position = await _determinePosition();
+                 //     List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
+                 //
+                 //     // Extract the address from the placemark data
+                 //     String address = "${placemarks[0].administrativeArea!}  ${placemarks[0].country!}";
+                 //
+                 //     // Navigate to the AddPostScreen with the image data and address
+                 //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddPostScreen(CameraPic: imageData, Address: address, )));
+                 //   } catch (e) {
+                 //     print("Error capturing image: $e");
+                 //   }
+                 // },
 
-                  await cameraController.takePicture().then((XFile? file) async {
+
+
+
+
+
+
+    onTap:() async {
+
+                  await cameraController.
+                  takePicture().
+                  then((XFile? file)
+                  async {
+                    Uint8List bytes = await file!.readAsBytes();
+                    //await XFile.writeAsBytes(Uint8List(0));
                       if(mounted){
                         if(file !=null){
                           _determinePosition().then((value) async {
