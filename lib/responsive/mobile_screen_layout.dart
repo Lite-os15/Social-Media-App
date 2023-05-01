@@ -1,3 +1,6 @@
+import 'dart:ffi';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:instagram_clone/models/location.dart';
@@ -7,6 +10,7 @@ import 'package:instagram_clone/screens/add_post_screen.dart';
 import 'package:instagram_clone/screens/camera_screen.dart';
 import 'package:instagram_clone/screens/graph_screen.dart';
 import 'package:instagram_clone/screens/search_screen.dart';
+import 'package:instagram_clone/utils/colour.dart';
 import 'package:instagram_clone/utils/global_variables.dart';
 import 'package:provider/provider.dart';
 
@@ -19,17 +23,40 @@ class MobileScreenLayout extends StatefulWidget {
 }
 
 class _MobileScreenLayoutState extends State<MobileScreenLayout> {
- // int index = 0;
+  //final GlobalKey<NavigatorState> navigatorKey;
+  int _page = 0;
   late PageController pageController;
 
   int currentTab =0;
   final List screens = [
-    GraphScreen(),
-    ActivityScreen(),
     SearchScreen(),
+    ActivityScreen(),
+    GraphScreen(),
     Location(),
 
-  ]; // for tabs animation
+  ];
+  final List<GButton> bottomNavItems = [
+    GButton(
+      icon: Icons.home,
+    ),
+    GButton(
+      icon: Icons.search,
+
+    ),
+    GButton(
+      icon: Icons.notifications,
+
+    ),
+    GButton(
+      icon: Icons.auto_graph,
+
+    ),
+    GButton(
+      icon: Icons.location_on_outlined,
+
+    ),
+  ];
+// for tabs animation
   final PageStorageBucket bucket = PageStorageBucket();
   Widget currentScreen = MobileScreenLayout();
   @override
@@ -44,76 +71,61 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     pageController.dispose();
   }
 
-  // void onPageChanged(int page) {
-  //   setState(() {
-  //    int index=0;
-  //   });
-  // }
+  void onPageChanged(int page) {
+    setState(() {
+    _page =page;
+    });
+  }
 
+  void navigationTapped(int page) {
+    //Animating Page
+    pageController.jumpToPage(page);
+  }
 
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
-          //children: homeScreenItems,
-
+        controller: pageController,
+        onPageChanged: onPageChanged,
+        children: homeScreenItems,
       ),
-      // appBar:
-      // AppBar(backgroundColor: Colors.green,
-      //   title: Text("Let's change"),
-      //
-      // ),
-
-
-
-      bottomNavigationBar: GNav(iconSize:30,
-
-        tabs: [//GestureDetector(onVerticalDragDown: ,)
-         GButton(icon: Icons.home_outlined,
-
-
-        ),
-        GButton(icon: Icons.search,
-          onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const SearchScreen(),
-          ),
-        ),
-        ),
-        GButton(icon: Icons.local_activity_outlined,
-          onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const ActivityScreen()
-            ,
-          ),
-        ),
-        ),
-
-        GButton(icon: Icons.auto_graph,
-          onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const GraphScreen(),
-          ),
-        ),
-        ),
-        GButton(icon: Icons.location_on_outlined,
-        onPressed:() => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const Location(),
-          ),
-        ) ,)
-      ],
-      backgroundColor: Colors.greenAccent,),
       floatingActionButton: FloatingActionButton(
-        onPressed:  () => Navigator.of(context).pushReplacement(
-      MaterialPageRoute(
-        builder: (context) => const CameraScreen(),
-      ),
-    ),
+        onPressed: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const CameraScreen(),
+          ),
+        ),
         child: Icon(Icons.add),
-       ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              blurRadius: 20,
+              color: Colors.black.withOpacity(.1),
+            )
+          ],
+        ),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal:2, vertical:0),
+            child: GNav(
+              tabs: bottomNavItems,iconSize: 30,
+              selectedIndex: _page,
+              onTabChange: (index) {
+                setState(() {
+                  _page = index;
+                });
+                pageController.jumpToPage(index);
+              },
+            ),
+          ),
+        ),
+      ),
     );
 
   }

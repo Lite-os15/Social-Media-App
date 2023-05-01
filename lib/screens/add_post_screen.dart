@@ -29,6 +29,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
   var Address;
   final TextEditingController  _descriptionController =TextEditingController();
   _AddPostScreenState(this.CameraPic, this.Address);
+  bool _isLoading = false;
 
   Uint8List? _imageData;
 
@@ -44,7 +45,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
       String profImage,
       String Address,
       Uint8List? imageData,
+
       )async{
+        setState(() {
+          _isLoading = true ;
+        });
      try {
        if (_imageData != null) {
           // Uint8List imageData = await file.readAsBytes();
@@ -58,9 +63,18 @@ class _AddPostScreenState extends State<AddPostScreen> {
          Address,
        );
        if (res == "success") {
+         setState(() {
+           _isLoading = false ;
+         });
          showSnackBar('Posted!', context);
+         //Navigator.of(context).push(MaterialPageRoute(builder: (context) => FeedScreen()));
+        //clearImage();
        } else {
+         setState(() {
+           _isLoading = false ;
+         });
          showSnackBar(res, context);
+
        }
      }else{
        showSnackBar('File is null', context);
@@ -70,6 +84,13 @@ class _AddPostScreenState extends State<AddPostScreen> {
        showSnackBar(e.toString(), context);
      }
   }
+  //clear the image and return to the screen back
+  // void clearImage(){
+  //   setState(() {
+  //     _imageData =null;
+  //   });
+  //
+  // }
   @override
   void initState() {
     super.initState();
@@ -81,11 +102,12 @@ class _AddPostScreenState extends State<AddPostScreen> {
     Size size = MediaQuery.of(context).size;
     final UserModel? user =Provider.of<UserProvider>(context).getUser;
 
+   //return _imageData == null || userProvider.getUser == null
     return Scaffold(
       appBar: AppBar(
-        
+
         title: const Text('Create Post'),
-        
+
         actions: [
           TextButton(
               onPressed:  ()  => postImage(
@@ -95,7 +117,7 @@ class _AddPostScreenState extends State<AddPostScreen> {
                 widget.Address,
                 _imageData,
 
-    ),
+      ),
               child: const Text('POST',style: TextStyle(color: Colors.white)
           )
           ),
@@ -104,6 +126,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
        body:
       Column(
         children: [
+          _isLoading? const LinearProgressIndicator() :
+          const Padding(
+              padding: EdgeInsets.only(top:0)
+          ),
+          const Divider(),
           Row(
           children:<Widget>[
             const Align(heightFactor: 0,
@@ -138,19 +165,19 @@ class _AddPostScreenState extends State<AddPostScreen> {
             color: Colors.pinkAccent,
             child: Image.file(File(CameraPic.path)),
           ),
-          
+
           Container(
             child: Chip(
               avatar: const Icon(Icons.location_on_outlined),
               label: Text(Address),labelStyle: TextStyle(color: Colors.black87),
             ),
           ),
-          
-          
-          
-          
+
+
+
+
          ],
-        
+
     ),
 
 

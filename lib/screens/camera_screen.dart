@@ -173,7 +173,7 @@ class _CameraScreenState extends State<CameraScreen> {
                   then((XFile? file)
                   async {
                     Uint8List bytes = await file!.readAsBytes();
-                    //await XFile.writeAsBytes(Uint8List(0));
+
                       if(mounted){
                         if(file !=null){
                           _determinePosition().then((value) async {

@@ -12,7 +12,7 @@ class _ActivityScreenState extends State<ActivityScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-        title: Text('Activity'),
+        title: const Text('Activity'),
     )
     );
   }
