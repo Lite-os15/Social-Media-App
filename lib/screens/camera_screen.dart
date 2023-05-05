@@ -4,6 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:instagram_clone/screens/feed_screen.dart';
 import 'add_post_screen.dart';
 
 
@@ -73,7 +74,7 @@ class _CameraScreenState extends State<CameraScreen> {
       print("value $value");
       List<Placemark> placemarks = await placemarkFromCoordinates(value.latitude, value.longitude);
       setState(() {
-        String address = "${placemarks[0].street!}  ${placemarks[0].country!}";
+        String address = "${placemarks[0].subAdministrativeArea!} ,  ${placemarks[0].administrativeArea!}";
       });
 
     }).catchError((error) {
@@ -138,33 +139,6 @@ class _CameraScreenState extends State<CameraScreen> {
                 child: button(Icons.flip_camera_ios_outlined, Alignment.bottomLeft)
             ),
             GestureDetector(
-                 // onTap:() async {
-                 //   try {
-                 //     // Capture image and get the XFile
-                 //     XFile? capturedImage = await cameraController.takePicture();
-                 //
-                 //     // Read the image data as bytes from the file
-                 //     Uint8List imageData = await capturedImage.readAsBytes();
-                 //
-                 //     // Get the location data
-                 //     Position position = await _determinePosition();
-                 //     List<Placemark> placemarks = await placemarkFromCoordinates(position.latitude, position.longitude);
-                 //
-                 //     // Extract the address from the placemark data
-                 //     String address = "${placemarks[0].administrativeArea!}  ${placemarks[0].country!}";
-                 //
-                 //     // Navigate to the AddPostScreen with the image data and address
-                 //     Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddPostScreen(CameraPic: imageData, Address: address, )));
-                 //   } catch (e) {
-                 //     print("Error capturing image: $e");
-                 //   }
-                 // },
-
-
-
-
-
-
 
     onTap:() async {
 
@@ -175,11 +149,11 @@ class _CameraScreenState extends State<CameraScreen> {
                     Uint8List bytes = await file!.readAsBytes();
 
                       if(mounted){
-                        if(file !=null){
+                        if(file != null){
                           _determinePosition().then((value) async {
                             List<Placemark> placemarks = await placemarkFromCoordinates(value.latitude, value.longitude);
 
-                            String address = "${placemarks[0].administrativeArea!}  ${placemarks[0].country!}";
+                            String address = "${placemarks[0].subAdministrativeArea !} , ${placemarks[0].country!}";
                             Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddPostScreen(CameraPic: file, Address: address, )));
                           });
                           print("Print saved to ${file.path}");
@@ -196,7 +170,9 @@ class _CameraScreenState extends State<CameraScreen> {
              alignment: Alignment.topLeft,
              child: Padding(
                padding: const EdgeInsets.all(8.0),
-                   child: FloatingActionButton(onPressed: () {  },
+                   child: FloatingActionButton( onPressed: (){
+                     Navigator.pop(context);
+                     },
                      child: Icon(Icons.arrow_back),
                      backgroundColor: null,
 

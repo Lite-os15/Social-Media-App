@@ -67,6 +67,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
            _isLoading = false ;
          });
          showSnackBar('Posted!', context);
+         Navigator.pop(context);
+         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => FeedScreen()));
          //Navigator.of(context).push(MaterialPageRoute(builder: (context) => FeedScreen()));
         //clearImage();
        } else {
@@ -96,6 +98,14 @@ class _AddPostScreenState extends State<AddPostScreen> {
     super.initState();
     _imageData = Uint8List(0);
     _readFile();
+  }
+
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
   }
   @override
   Widget build(BuildContext context) {
@@ -172,30 +182,9 @@ class _AddPostScreenState extends State<AddPostScreen> {
               label: Text(Address),labelStyle: TextStyle(color: Colors.black87),
             ),
           ),
-
-
-
-
-         ],
-
+        ],
     ),
 
-
-
-
-
-
-      // Column(
-      //   children:[
-      //     Container(
-      //         width: double.infinity,
-      //         height: 200,
-      //         child: Image.file(File(CameraPic.path))),
-      //      Text(Address)
-      //   ],
-      //  ),
-
-     // ),
     );
   }
   @override

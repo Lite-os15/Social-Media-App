@@ -8,6 +8,7 @@ import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/screens/activity_screen.dart';
 import 'package:instagram_clone/screens/add_post_screen.dart';
 import 'package:instagram_clone/screens/camera_screen.dart';
+import 'package:instagram_clone/screens/feed_screen.dart';
 import 'package:instagram_clone/screens/graph_screen.dart';
 import 'package:instagram_clone/screens/search_screen.dart';
 import 'package:instagram_clone/utils/colour.dart';
@@ -33,6 +34,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     ActivityScreen(),
     GraphScreen(),
     Location(),
+    FeedScreen(),
 
   ];
   final List<GButton> bottomNavItems = [
@@ -100,7 +102,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         child: Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: Container(
+      bottomNavigationBar: Container(width: double.infinity,
         decoration: BoxDecoration(
           color: Colors.white,
           boxShadow: [
