@@ -1,20 +1,15 @@
-import 'dart:ffi';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:instagram_clone/models/location.dart';
-import 'package:instagram_clone/providers/user_provider.dart';
 import 'package:instagram_clone/screens/activity_screen.dart';
 import 'package:instagram_clone/screens/add_post_screen.dart';
 import 'package:instagram_clone/screens/camera_screen.dart';
 import 'package:instagram_clone/screens/feed_screen.dart';
 import 'package:instagram_clone/screens/graph_screen.dart';
+import 'package:instagram_clone/screens/profile_screen.dart';
 import 'package:instagram_clone/screens/search_screen.dart';
 import 'package:instagram_clone/utils/colour.dart';
 import 'package:instagram_clone/utils/global_variables.dart';
 import 'package:provider/provider.dart';
-
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({Key? key}) : super(key: key);
@@ -24,43 +19,16 @@ class MobileScreenLayout extends StatefulWidget {
 }
 
 class _MobileScreenLayoutState extends State<MobileScreenLayout> {
-  //final GlobalKey<NavigatorState> navigatorKey;
   int _page = 0;
   late PageController pageController;
 
-  int currentTab =0;
-  final List screens = [
-    SearchScreen(),
-    ActivityScreen(),
-    GraphScreen(),
-    Location(),
+  final List<Widget> screens = [
     FeedScreen(),
-
+    const SearchScreen(),
+    const ActivityScreen(),
+    const GraphScreen(),
   ];
-  final List<GButton> bottomNavItems = [
-    GButton(
-      icon: Icons.home,
-    ),
-    GButton(
-      icon: Icons.search,
 
-    ),
-    GButton(
-      icon: Icons.notifications,
-
-    ),
-    GButton(
-      icon: Icons.auto_graph,
-
-    ),
-    GButton(
-      icon: Icons.location_on_outlined,
-
-    ),
-  ];
-// for tabs animation
-  final PageStorageBucket bucket = PageStorageBucket();
-  Widget currentScreen = MobileScreenLayout();
   @override
   void initState() {
     super.initState();
@@ -73,63 +41,77 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     pageController.dispose();
   }
 
-  void onPageChanged(int page) {
-    setState(() {
-    _page =page;
-    });
-  }
-
-  void navigationTapped(int page) {
-    //Animating Page
-    pageController.jumpToPage(page);
-  }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false, // Add this line to prevent resizing
+
       body: PageView(
         controller: pageController,
-        onPageChanged: onPageChanged,
-        children: homeScreenItems,
+        onPageChanged: (int page) {
+          setState(() {
+            _page = page;
+          });
+        },
+        children: screens,
       ),
       floatingActionButton: FloatingActionButton(
+        clipBehavior: Clip.none,
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => const CameraScreen(),
           ),
         ),
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: Container(width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 20,
-              color: Colors.black.withOpacity(.1),
-            )
-          ],
-        ),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal:2, vertical:0),
-            child: GNav(
-              tabs: bottomNavItems,iconSize: 30,
-              selectedIndex: _page,
-              onTabChange: (index) {
+      bottomNavigationBar: BottomAppBar(
+
+        height: MediaQuery.of(context).size.height *0.07,
+        shape: const CircularNotchedRectangle(),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            IconButton(
+              icon: const Icon(Icons.home),
+              onPressed: () {
                 setState(() {
-                  _page = index;
+                  _page = 0;
                 });
-                pageController.jumpToPage(index);
+                pageController.jumpToPage(_page);
               },
             ),
-          ),
+            IconButton(
+              icon: const Icon(Icons.search,),
+              onPressed: () {
+                setState(() {
+                  _page = 1;
+                });
+                pageController.jumpToPage(_page);
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.notifications),
+              onPressed: () {
+                setState(() {
+                  _page = 2;
+                });
+                pageController.jumpToPage(_page);
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.auto_graph),
+              onPressed: () {
+                setState(() {
+                  _page = 3;
+                });
+                pageController.jumpToPage(_page);
+              },
+            ),
+
+          ],
         ),
       ),
     );
-
   }
-
 }

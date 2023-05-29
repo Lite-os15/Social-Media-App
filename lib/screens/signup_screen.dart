@@ -1,25 +1,24 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:instagram_clone/resources/auth_methods.dart';
-import 'package:instagram_clone/responsive/mobile_screen_layout.dart';
-import 'package:instagram_clone/responsive/responsive_screen_layout.dart';
-import 'package:instagram_clone/responsive/web_screen_layout.dart';
+
 import 'package:instagram_clone/screens/login_screen.dart';
+import 'package:instagram_clone/screens/user_details_screen.dart';
 import 'package:instagram_clone/utils/colour.dart';
 import 'package:instagram_clone/utils/utils.dart';
-import 'package:instagram_clone/widgets/text_field_input.dart';
 
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+
+
+  const SignUpScreen({Key? key, }) : super(key: key);
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
@@ -37,7 +36,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _usernameController.dispose();
   }
 
+
+
+
   void signUpUser() async {
+
     // set loading to true
     setState(() {
       _isLoading = true;
@@ -45,39 +48,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     // signup user using our authmethodds
 
-    String res = await AuthMethods().signUpUser(
-        email: _emailController.text,
-        password: _passwordController.text,
-        username: _usernameController.text,
-        bio: _bioController.text,
-        file: _image!
-        );
+
     // if string returned is sucess, user has been created
 
-    if  (res == "success") {
+
 
       setState(() {
         _isLoading = false;
       });
 
       //navigate to the home screen
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const ResponsiveLayout(
-            mobileScreenLayout: MobileScreenLayout(),
-            webScreenLayout: WebScreenLayout(),
-          ),
-        ),
-      );
-    } else {
-      setState(() {
-        _isLoading = false;
-      });
-      // show the error
-      // ignore: use_build_context_synchronously
-     showSnackBar(res, context);
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => IntroScreen(
+        email: _emailController.text,
+        password: _passwordController.text,
+        bio: _bioController.text,
+        username: _usernameController.text,
+        imageFile: _image!,
+
+      )));
+
+
     }
-  }
+
 
   selectImage() async {
     Uint8List im = await pickImage(ImageSource.gallery);
@@ -89,11 +81,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
 
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: Container(
+          decoration:BoxDecoration(
+            image: DecorationImage(fit: BoxFit.cover,
+              image: NetworkImage(
+                'https://images.unsplash.com/photo-1684399026406-da824e064d46?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDE0fDZzTVZqVExTa2VRfHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=1000&q=60'
+              ),
+            ),
+          ),
           padding: const EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
           height: double.infinity,
@@ -101,7 +102,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children:  [
-                SizedBox(height: 64,),
+                const SizedBox(height: 64,),
                 // Flexible(child: Container(),flex: 2),
                 //svg image
                 // Image.asset('assets/images/button1.png',color: primaryColor,height: 64,),
@@ -120,7 +121,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                            radius: 64,
                             backgroundImage: NetworkImage(
                                       'https://i.stack.imgur.com/l60Hf.png'),
-                                  backgroundColor: Colors.red,
+                                  backgroundColor: Colors.white,
                              ),
                      Positioned(bottom: -10,
                          left: 80,
@@ -139,7 +140,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   key: _formKey,
                   children: [
                     TextFormField(controller: _usernameController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Enter your username',
                       ),
                       validator: (value) {
@@ -147,6 +148,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         {
                           return 'please enter username';
                         }
+                      return null;
                       },
                     ),
                     const SizedBox(
@@ -155,7 +157,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                     //text field input for email
                     TextFormField(controller: _emailController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Enter email'
                       ),
                     ),
@@ -165,8 +167,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                     //text field input for password
                     TextFormField(controller: _passwordController,
-                      decoration: InputDecoration(
-                        hintText: 'Enter Password'
+
+                      decoration: const InputDecoration(
+                          label: Text('Enter Password'),
+                        hintText: 'Atleast 6 character',
+
                       ),
                        //validator: ,
                     ),
@@ -178,18 +183,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                TextFieldInput(textEditingController: _bioController,
-                  hintText: 'Enter bio',
-                  textInputType: TextInputType.text,
+                TextFormField(controller: _bioController,
+                  decoration:const InputDecoration(
+                    hintText: 'Enter bio',
+
+                  )
+
                 ),
                 const SizedBox(
                   height: 24,
                 ),
 
+
                 InkWell(
-
-
-                  child: Container(
+                  child:
+                  Container(
                     width: double.infinity,
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(vertical: 12),
@@ -210,17 +218,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   onTap: () {
                     if (_image == null) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text("Please select an Image")));
+                          content: Text("Empty field(image)")));
                     } else if (_usernameController.text.isNotEmpty &&
                         _emailController.text.isNotEmpty &&
                         _passwordController.text.isNotEmpty &&
-                        _bioController.text.isNotEmpty) {
-                      signUpUser();
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text("Fields can't be empty")));
+                        _bioController.text.isNotEmpty)
+                    {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => IntroScreen(
+                            email: _emailController.text,
+                            password: _passwordController.text,
+                            bio: _bioController.text,
+                            username: _usernameController.text,
+                            imageFile: _image!,
+
+                          ),
+                        ),
+                      );
                     }
-                  },
+
+                    // if (_image == null) {
+                    //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    //       content: Text("Please select an Image")));
+                    // } else if (_usernameController.text.isNotEmpty &&
+                    //     _emailController.text.isNotEmpty &&
+                    //     _passwordController.text.isNotEmpty &&
+                    //     _bioController.text.isNotEmpty) {
+                    //   signUpUser();
+                    // } else {
+                    //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    //       content: Text("Fields can't be empty")));
+                    // }
+                  }
                 ),
 
                // button login
@@ -241,10 +271,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Container(
-                      child: const Text("Already User?"),
                       padding: const EdgeInsets.symmetric(
                         vertical: 8,
                       ),
+                      child: const Text("Already User?"),
                     ),
 
                     InkWell(
@@ -254,11 +284,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
 
-                      child: Container(
-                        child: const Text("Log in.",
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold
-                          ),
+                      child: const Text("Log in.",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold
                         ),
                       ),
                     ),

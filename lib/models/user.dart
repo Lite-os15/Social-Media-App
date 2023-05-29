@@ -8,6 +8,9 @@ class UserModel {
   final String bio;
   final List followers;
   final List following;
+  final String dob;
+  final String userLocation;
+
 
   const UserModel(
       {required this.username,
@@ -16,12 +19,15 @@ class UserModel {
         required this.email,
         required this.bio,
         required this.followers,
-        required this.following});
+        required this.following,
+        required this.dob,
+        required this.userLocation,
+      });
 
   static UserModel fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data();
-    if (snapshot == null)
-      return UserModel(
+    if (snapshot == null) {
+      return const UserModel(
         username:"",
         uid:"",
         email:"",
@@ -29,8 +35,11 @@ class UserModel {
         bio:"",
         followers:[],
         following:[],
+        dob: "",
+        userLocation: "",
 
     );
+    }
 
 
       //throw Exception("DocumentSnapshot data is nul!");
@@ -45,25 +54,23 @@ class UserModel {
       bio: snap["bio"],
       followers: snap["followers"],
       following: snap["following"],
+      dob: snap["dob"],
+      userLocation: snap["userLocation"],
+
     );
-    // return UserModel(
-    //   username: "username",
-    //   uid: "uid",
-    //   email: "email",
-    //   photoUrl: "photoUrl",
-    //   bio: "bio",
-    //   followers:["followers"],
-    //   following: ["following"],
-    // );
+
   }
 
   Map<String, dynamic> toJson() => {
     "username": username,
     "uid": uid,
+    "dob": dob,
     "email": email,
     "photoUrl": photoUrl,
     "bio": bio,
     "followers": followers,
     "following": following,
+    "userLocation": userLocation,
+
   };
 }

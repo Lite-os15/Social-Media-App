@@ -18,7 +18,7 @@ class CameraScreen extends StatefulWidget {
 
 class _CameraScreenState extends State<CameraScreen> {
   late List<CameraDescription> cameras;
-  late CameraController cameraController;
+  CameraController? cameraController;
   int direction = 0;
   late double lat,long;
 
@@ -28,8 +28,8 @@ class _CameraScreenState extends State<CameraScreen> {
   void initState() {
     startCamera(0);
     super.initState();
-
   }
+
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
@@ -81,17 +81,7 @@ class _CameraScreenState extends State<CameraScreen> {
       print("Error $error");
     });
   }
-  //For convert lat long to address
-  // getAddress(lat, long) async {
-  //   List<Placemark> placemarks = await placemarkFromCoordinates(lat, long);
-  //   setState(() {
-  //
-  //   });
-  //
-  //   for (int i = 0; i < placemarks.length; i++) {
-  //     print("INDEX $i ${placemarks[i]}");
-  //   }
-  // }
+
 
   void startCamera(int directon) async {
     cameras = await availableCameras();
@@ -101,7 +91,7 @@ class _CameraScreenState extends State<CameraScreen> {
         ResolutionPreset.high,
         enableAudio: false,
     );
-    await cameraController.initialize().then((value){
+    await cameraController!.initialize().then((value){
       if(!mounted){
         return;
       }
@@ -124,11 +114,13 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
 
 
-    if(cameraController.value.isInitialized) {
+    if (cameraController == null || !cameraController!.value.isInitialized) {
+      return const SizedBox();
+    }
       return Scaffold(
         body: Stack(
           children: [
-            CameraPreview(cameraController),
+            CameraPreview(cameraController!),
             GestureDetector(
               onTap: (){
                 setState(() {
@@ -142,19 +134,20 @@ class _CameraScreenState extends State<CameraScreen> {
 
     onTap:() async {
 
-                  await cameraController.
+                  await cameraController!.
                   takePicture().
                   then((XFile? file)
                   async {
                     Uint8List bytes = await file!.readAsBytes();
 
                       if(mounted){
-                        if(file != null){
+                        if(file != null)
+                        {
                           _determinePosition().then((value) async {
                             List<Placemark> placemarks = await placemarkFromCoordinates(value.latitude, value.longitude);
 
-                            String address = "${placemarks[0].subAdministrativeArea !} , ${placemarks[0].country!}";
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddPostScreen(CameraPic: file, Address: address, )));
+                            String address = "${placemarks[0].locality !} , ${placemarks[0].administrativeArea!}";
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => AddPostScreen(CameraPic: file, Address: address, )));
                           });
                           print("Print saved to ${file.path}");
                           // Navigator.of(context).pop();
@@ -186,9 +179,7 @@ class _CameraScreenState extends State<CameraScreen> {
         ),
 
           );
-    }else{
-      return const SizedBox();
-    }
+
       }
   Widget button(IconData icon,Alignment alignment){
     return  Align(

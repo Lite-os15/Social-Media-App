@@ -18,7 +18,9 @@ class AuthMethods {
     }
 
     DocumentSnapshot documentSnapshot =
-    await FirebaseFirestore.instance.collection('users').doc(currentUser.uid).get();
+    await FirebaseFirestore.instance.collection('users')
+        .doc(currentUser.uid)
+        .get();
 
 
     return UserModel.fromSnap(documentSnapshot);
@@ -32,6 +34,9 @@ class AuthMethods {
     required String username,
     required String bio,
     required Uint8List file,
+    required String dob,
+    required String userLocation,
+
   }) async {
     String res = "Some error Occurred";
     try {
@@ -48,21 +53,24 @@ class AuthMethods {
         String photoUrl = await StorageMethods()
             .uploadImageToStorage('profilePics', file, false);
 
-        UserModel _user = UserModel(
+        UserModel user = UserModel(
           username: username,
           uid: cred.user!.uid,
           photoUrl: photoUrl,
           email: email,
           bio: bio,
           followers: [],
+          dob: dob,
           following: [],
+          userLocation: userLocation,
+
         );
 
         // adding user in our database
         await _firestore
             .collection("users")
             .doc(cred.user!.uid)
-            .set(_user.toJson());
+            .set(user.toJson());
 
         res = "success";
       } else {
@@ -97,7 +105,47 @@ class AuthMethods {
     return res;
   }
 
+
+  // User Details
+  // Future<String> userDetails({
+  //   required String dob,
+  //   required String userLocation,
+  // }) async {
+  //   String res = "Some error Occurred";
+  //   try {
+  //     if (dob.isNotEmpty) {
+  //       User? currentUser = _auth.currentUser;
+  //       if (currentUser == null) {
+  //         throw Exception("User not found");
+  //       }
+  //
+  //       // Create a Map object with the 'dob' field
+  //       Map<String, dynamic> userData = {
+  //         'dob': dob,
+  //         'userLocation' :userLocation,
+  //       };
+  //
+  //       // Update the user's data in the Firestore collection
+  //       await _firestore.collection("users").doc(currentUser.uid).update(userData);
+  //
+  //       res = "success";
+  //     } else {
+  //       res = "Please enter birth date";
+  //     }
+  //   } catch (err) {
+  //     return err.toString();
+  //   }
+  //   return res;
+  // }
+
+
+
+
+
+
+
   Future<void> signOut() async {
     await _auth.signOut();
   }
+
 }
