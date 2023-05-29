@@ -73,6 +73,7 @@ class _PostCardState extends State<PostCard> {
     // );
       child: CircleAvatar(
                     radius: 25,
+                    backgroundColor: Colors.grey,
                     //adding profile image to the postcard
                     backgroundImage: NetworkImage(
                       widget.snap['profImage'],
@@ -110,17 +111,20 @@ class _PostCardState extends State<PostCard> {
                               vertical: 16,
                             ),
                             shrinkWrap: true,
-                            children: ['Delete']
-                                .map(
+                            children: [
+                              Text('Delete',style: TextStyle(color: Colors.black),)
+                                ].map(
                                   (e) => InkWell(
-                                    onTap: () {},
+                                    onTap: () async {
+                                      FireStoreMethods().deletePost(widget.snap['postId']);
+                                      Navigator.of(context).pop();
+                                    },
                                     child: Container(
                                       padding: const EdgeInsets.symmetric(
                                           vertical: 12, horizontal: 16),
                                     ),
                                   ),
-                                )
-                                .toList(),
+                                ).toList(),
                           ),
                         ),
                       );
@@ -220,7 +224,7 @@ class _PostCardState extends State<PostCard> {
                   icon: widget.snap['likes'].contains(user?.uid)
                   ? const Icon(
                    Icons.favorite,
-                      color: Colors.greenAccent,
+                      color: Colors.red,
                      )
                      :const Icon(Icons.favorite_border_outlined,
                   ),

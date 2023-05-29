@@ -7,19 +7,23 @@ import 'package:instagram_clone/responsive/mobile_screen_layout.dart';
 import 'package:instagram_clone/responsive/responsive_screen_layout.dart';
 import 'package:instagram_clone/responsive/web_screen_layout.dart';
 import 'package:instagram_clone/screens/login_screen.dart';
+import 'package:instagram_clone/screens/user_details_screen.dart';
 import 'package:instagram_clone/utils/colour.dart';
 import 'package:instagram_clone/utils/utils.dart';
 import 'package:instagram_clone/widgets/text_field_input.dart';
 
 
 class SignUpScreen extends StatefulWidget {
-  const SignUpScreen({Key? key}) : super(key: key);
+
+
+  const SignUpScreen({Key? key, }) : super(key: key);
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _bioController = TextEditingController();
@@ -50,7 +54,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         password: _passwordController.text,
         username: _usernameController.text,
         bio: _bioController.text,
-        file: _image!
+        file: _image!,
+
         );
     // if string returned is sucess, user has been created
 
@@ -61,14 +66,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
       });
 
       //navigate to the home screen
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (context) => const ResponsiveLayout(
-            mobileScreenLayout: MobileScreenLayout(),
-            webScreenLayout: WebScreenLayout(),
-          ),
-        ),
-      );
+      Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => const IntroScreen()));
+      // Navigator.of(context).pushReplacement(
+      //   MaterialPageRoute(
+      //     builder: (context) => const
+      //     ResponsiveLayout(
+      //       mobileScreenLayout: MobileScreenLayout(),
+      //       webScreenLayout: WebScreenLayout(),
+      //     ),
+      //   ),
+      // );
     } else {
       setState(() {
         _isLoading = false;
@@ -86,6 +93,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       _image = im;
     });
   }
+
+
 
 
 
@@ -165,7 +174,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                     //text field input for password
                     TextFormField(controller: _passwordController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: 'Enter Password'
                       ),
                        //validator: ,
@@ -186,10 +195,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: 24,
                 ),
 
+
                 InkWell(
 
 
-                  child: Container(
+                  child:
+                  Container(
                     width: double.infinity,
                     alignment: Alignment.center,
                     padding: const EdgeInsets.symmetric(vertical: 12),
@@ -220,7 +231,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                           content: Text("Fields can't be empty")));
                     }
-                  },
+                  }
                 ),
 
                // button login

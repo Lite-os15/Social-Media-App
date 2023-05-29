@@ -10,6 +10,7 @@ import 'package:instagram_clone/screens/add_post_screen.dart';
 import 'package:instagram_clone/screens/camera_screen.dart';
 import 'package:instagram_clone/screens/feed_screen.dart';
 import 'package:instagram_clone/screens/graph_screen.dart';
+import 'package:instagram_clone/screens/profile_screen.dart';
 import 'package:instagram_clone/screens/search_screen.dart';
 import 'package:instagram_clone/utils/colour.dart';
 import 'package:instagram_clone/utils/global_variables.dart';
@@ -24,6 +25,7 @@ class MobileScreenLayout extends StatefulWidget {
 }
 
 class _MobileScreenLayoutState extends State<MobileScreenLayout> {
+
   //final GlobalKey<NavigatorState> navigatorKey;
   int _page = 0;
   late PageController pageController;
@@ -34,6 +36,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
     ActivityScreen(),
     GraphScreen(),
     Location(),
+    // ProfileScreen(),
     FeedScreen(),
 
   ];
@@ -54,7 +57,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
 
     ),
     GButton(
-      icon: Icons.location_on_outlined,
+      icon: Icons.perm_identity,
 
     ),
   ];
@@ -107,7 +110,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              blurRadius: 20,
+
               color: Colors.black.withOpacity(.1),
             )
           ],
@@ -117,6 +120,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
             padding: const EdgeInsets.symmetric(horizontal:2, vertical:0),
             child: GNav(
               tabs: bottomNavItems,iconSize: 30,
+
               selectedIndex: _page,
               onTabChange: (index) {
                 setState(() {

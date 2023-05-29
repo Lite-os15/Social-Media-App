@@ -34,65 +34,68 @@ class _AddPostScreenState extends State<AddPostScreen> {
   Uint8List? _imageData;
 
   Future<void> _readFile() async {
-    final file = File(CameraPic.path);
+    final file = File(CameraPic!.path);
     _imageData = await file.readAsBytes();
   }
 
   // List<int> bytes = File(CameraPic).readAsBytesSync();
   void postImage(
-      String uid,
-      String username,
-      String profImage,
-      String Address,
+      String? uid,
+      String? username,
+      String? profImage,
+      String? Address,
       Uint8List? imageData,
 
       )async{
         setState(() {
           _isLoading = true ;
         });
-     try {
-       if (_imageData != null) {
-          // Uint8List imageData = await file.readAsBytes();
-        // read file contents into Uint8List
-       String res = await FireStoreMethods().uploadPost(
-         _descriptionController.text,
-         imageData!,
-         uid,
-         username,
-         profImage,
-         Address,
-       );
-       if (res == "success") {
-         setState(() {
-           _isLoading = false ;
-         });
-         showSnackBar('Posted!', context);
-         Navigator.pop(context);
-         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => FeedScreen()));
-         //Navigator.of(context).push(MaterialPageRoute(builder: (context) => FeedScreen()));
-        //clearImage();
-       } else {
-         setState(() {
-           _isLoading = false ;
-         });
-         showSnackBar(res, context);
-
-       }
-     }else{
-       showSnackBar('File is null', context);
-    }
-
-     }catch(e){
-       showSnackBar(e.toString(), context);
-     }
+        if (uid != null && username != null && profImage != null && Address != null && imageData != null) {
+          try {
+            String res = await FireStoreMethods().uploadPost(
+              _descriptionController.text,
+              imageData,
+              uid,
+              username,
+              profImage,
+              Address,
+            );
+            if (res == "success") {
+              setState(() {
+                _isLoading = false;
+              });
+              showSnackBar('Posted!', context);
+              Navigator.pop(context);
+              Navigator.of(context).pop(MaterialPageRoute(builder: (context) => FeedScreen()));
+            } else {
+              setState(() {
+                _isLoading = false;
+              });
+              showSnackBar(res, context);
+            }
+          } catch (e) {
+            showSnackBar(e.toString(), context);
+          }
+        } else {
+          showSnackBar('One or more required values are null', context);
+        }
   }
+  //In this updated code, all the variables (uid, username, profImage, address, and imageData) are marked as nullable (String? and Uint8List?). Inside the method, before accessing these variables, we check if any of them are null. If any of them is null, we show a snackbar indicating that some required values are null. Otherwise, we proceed with the post upload process.
+
+  //Make sure to update the method signature and null checks wherever you're calling the postImage method.
+
+
+
+
+
+
   //clear the image and return to the screen back
-  // void clearImage(){
-  //   setState(() {
-  //     _imageData =null;
-  //   });
-  //
-  // }
+  void clearImage(){
+    setState(() {
+      _imageData =null;
+    });
+
+  }
   @override
   void initState() {
     super.initState();
@@ -110,26 +113,31 @@ class _AddPostScreenState extends State<AddPostScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final UserModel? user =Provider.of<UserProvider>(context).getUser;
+   final UserModel? user =Provider.of<UserProvider>(context).getUser;
 
-   //return _imageData == null || userProvider.getUser == null
+
     return Scaffold(
       appBar: AppBar(
 
         title: const Text('Create Post'),
 
         actions: [
-          TextButton(
-              onPressed:  ()  => postImage(
-                user!.uid,
-                user.username,
-                user.photoUrl,
-                widget.Address,
-                _imageData,
-
-      ),
-              child: const Text('POST',style: TextStyle(color: Colors.white)
-          )
+          InkWell(
+            child: TextButton(
+                onPressed:  () {
+                  postImage(
+                  user!.uid,
+                  user.username,
+                  user.photoUrl,
+                  widget.Address,
+                  _imageData,
+                  );
+                 // Navigator.of(context).pop(MaterialPageRoute(builder: (context) => FeedScreen()));
+             // Navigator.pop(context);
+  },
+                child: const Text('POST',style: TextStyle(color: Colors.white)
+            )
+            ),
           ),
         ],
       ),

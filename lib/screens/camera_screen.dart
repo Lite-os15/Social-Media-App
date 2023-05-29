@@ -124,7 +124,9 @@ class _CameraScreenState extends State<CameraScreen> {
   Widget build(BuildContext context) {
 
 
-    if(cameraController.value.isInitialized) {
+    if (cameraController == null || !cameraController.value.isInitialized) {
+      return const SizedBox();
+    }
       return Scaffold(
         body: Stack(
           children: [
@@ -149,12 +151,13 @@ class _CameraScreenState extends State<CameraScreen> {
                     Uint8List bytes = await file!.readAsBytes();
 
                       if(mounted){
-                        if(file != null){
+                        if(file != null)
+                        {
                           _determinePosition().then((value) async {
                             List<Placemark> placemarks = await placemarkFromCoordinates(value.latitude, value.longitude);
 
-                            String address = "${placemarks[0].subAdministrativeArea !} , ${placemarks[0].country!}";
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => AddPostScreen(CameraPic: file, Address: address, )));
+                            String address = "${placemarks[0].locality !} , ${placemarks[0].administrativeArea!}";
+                            Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => AddPostScreen(CameraPic: file, Address: address, )));
                           });
                           print("Print saved to ${file.path}");
                           // Navigator.of(context).pop();
@@ -186,9 +189,7 @@ class _CameraScreenState extends State<CameraScreen> {
         ),
 
           );
-    }else{
-      return const SizedBox();
-    }
+
       }
   Widget button(IconData icon,Alignment alignment){
     return  Align(

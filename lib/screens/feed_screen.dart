@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:instagram_clone/utils/colour.dart';
 import 'package:instagram_clone/utils/global_variables.dart';
 import 'package:instagram_clone/widgets/post_card.dart';
+import 'package:instagram_clone/widgets/side_menu.dart';
 
 
 class FeedScreen extends StatelessWidget {
@@ -21,7 +22,8 @@ class FeedScreen extends StatelessWidget {
             //color: primaryColor,
             //height: 32,
           actions: [
-            IconButton(onPressed: (){}, icon:const Icon(Icons.message_outlined))
+            IconButton(onPressed: (){}, icon:const Icon(Icons.menu)),
+            IconButton(onPressed:(){}, icon:const Icon(Icons.message_outlined))
           ],
            ),
 
