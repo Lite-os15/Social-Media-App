@@ -9,14 +9,27 @@ import 'package:uuid/uuid.dart';
 class FireStoreMethods {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  Future<String> uploadPost(String description, Uint8List file, String uid,
-      String username, String profImage, String address) async {
+  Future<String> uploadPost(
+      String description,
+      Uint8List file,
+      String uid,
+      String username,
+      String profImage,
+      String address,
+      String lat,
+      String long,
+      ) async {
     // asking uid here because we dont want to make extra calls to firebase auth when we can just get from our state management
     String res = "Some error occurred";
     try {
       String photoUrl =
-          await StorageMethods().uploadImageToStorage('posts', file, true);
-      String postId = const Uuid().v1(); // creates unique id based on time
+      await StorageMethods().uploadImageToStorage('posts', file, true);
+      String postId = const Uuid().v1();
+
+      // creates unique id based on time
+
+
+
       Post post = Post(
         description: description,
         uid: uid,
@@ -27,6 +40,8 @@ class FireStoreMethods {
         postUrl: photoUrl,
         profImage: profImage,
         address: address,
+        lat: lat,
+        long: long,
       );
       _firestore.collection('posts').doc(postId).set(post.toJson());
       res = "success";
@@ -103,7 +118,7 @@ class FireStoreMethods {
   Future<void> followUser(String uid, String followId) async {
     try {
       DocumentSnapshot snap =
-          await _firestore.collection('users').doc(uid).get();
+      await _firestore.collection('users').doc(uid).get();
       List following = (snap.data()! as dynamic)['following'];
 
       if (following.contains(followId)) {

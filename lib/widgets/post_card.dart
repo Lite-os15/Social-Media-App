@@ -43,9 +43,9 @@ class _PostCardState extends State<PostCard> {
     }catch(e){
       showSnackBar(e.toString(), context);
     }
-    setState(() {
-
-    });
+    // setState(() {
+    //
+    // });
   }
 
 
@@ -75,10 +75,13 @@ class _PostCardState extends State<PostCard> {
                     backgroundColor: Colors.grey,
                     //adding profile image to the postcard
                     backgroundImage: NetworkImage(
-                      widget.snap['profImage'],
+                      widget.snap['profImage'] ?? 'Error ',
                     ),
+
                   ),
+
                 ),
+
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(
@@ -182,7 +185,7 @@ class _PostCardState extends State<PostCard> {
                 height: MediaQuery.of(context).size.height * 0.7,
                 width: double.infinity,
                 child: Image.network(
-                  widget.snap['postUrl'],
+                  widget.snap['postUrl'] ?? '',
                   fit: BoxFit.cover,
                 ),
               ),

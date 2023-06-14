@@ -63,6 +63,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final double coverHeight = MediaQuery.of(context).size.height * 0.2;
     final double profileHeight = MediaQuery.of(context).size.height * 0.15;
