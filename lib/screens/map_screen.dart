@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:instagram_clone/utils/utils.dart';
 import 'package:latlong2/latlong.dart';
 
 class MapScreen extends StatefulWidget {
@@ -20,6 +19,7 @@ class _MapScreenState extends State<MapScreen> {
 
   @override
   void initState() {
+    super.initState();
     //THIS FUNCTION FETCHES ALL THE POST DATA FROM FIRESTORE
     getPostData();
     // THIS FUNCTION GET THE CURRENT LOCATION OF THE USER
@@ -53,9 +53,9 @@ class _MapScreenState extends State<MapScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Maps'),
+        title: const Text('Maps'),
       ),
-      body: (_position == null) ? Center(child: CircularProgressIndicator(),): FlutterMap(
+      body: (_position == null) ? const Center(child: CircularProgressIndicator(),): FlutterMap(
         options: MapOptions(
           center: LatLng(_position!.latitude, _position!.longitude),
           zoom: 17.0,
@@ -65,7 +65,7 @@ class _MapScreenState extends State<MapScreen> {
             // THE URL FOR OpenStreetView API.
             urlTemplate:
             "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-          subdomains: ["a","b","c"],
+          subdomains: const ["a","b","c"],
           ),
           MarkerLayer(
             markers: markerList,
@@ -94,7 +94,12 @@ class _MapScreenState extends State<MapScreen> {
           point: LatLng(snapshot['lat'], snapshot['long']),
           builder: (ctx) => InkWell(
             onTap: () {
-              ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Post UID : ${snapshot['postId']} clicked')));
+              ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                      content:
+                      Text(
+                          'Post UID : ${snapshot['postId']} clicked')));
+
               print('${snapshot['postId']} clicked');
             },
             child: Container(
