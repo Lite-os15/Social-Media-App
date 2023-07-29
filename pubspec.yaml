@@ -59,7 +59,8 @@ dependencies:
   latlong2: ^0.8.2
   syncfusion_flutter_charts: ^21.2.4
   http: ^0.13.3
-
+  syncfusion_localizations: ^21.2.4
+  flutter_localization: ^0.1.13
 
 dev_dependencies:
   flutter_test:
