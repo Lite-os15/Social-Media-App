@@ -49,7 +49,7 @@ dependencies:
   camera: ^0.10.4
   geolocator: ^9.0.2
   geocoding: ^2.1.0
-  intl: ^0.17.0
+  intl: ^0.18.0
   flutter_staggered_grid_view: ^0.4.1
   shared_preferences: ^2.0.8
   flutter_map: ^3.0.0
@@ -60,7 +60,7 @@ dependencies:
   syncfusion_flutter_charts: ^21.2.4
   http: ^0.13.3
   syncfusion_localizations: ^21.2.4
-  flutter_localization: ^0.1.13
+  flutter_localization: any
 
 dev_dependencies:
   flutter_test:
