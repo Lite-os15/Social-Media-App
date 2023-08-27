@@ -1,14 +1,15 @@
 
+import 'package:Lets_Change/resources/auth_methods.dart';
+import 'package:Lets_Change/responsive/mobile_screen_layout.dart';
+import 'package:Lets_Change/responsive/responsive_screen_layout.dart';
+import 'package:Lets_Change/responsive/web_screen_layout.dart';
+import 'package:Lets_Change/screens/signup_screen.dart';
+import 'package:Lets_Change/utils/colour.dart';
+import 'package:Lets_Change/utils/utils.dart';
+import 'package:Lets_Change/widgets/text_field_input.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:instagram_clone/resources/auth_methods.dart';
-import 'package:instagram_clone/responsive/mobile_screen_layout.dart';
-import 'package:instagram_clone/responsive/responsive_screen_layout.dart';
-import 'package:instagram_clone/responsive/web_screen_layout.dart';
-import 'package:instagram_clone/screens/signup_screen.dart';
-import 'package:instagram_clone/utils/colour.dart';
-import 'package:instagram_clone/utils/utils.dart';
-import 'package:instagram_clone/widgets/text_field_input.dart';
+
 
 
 class LoginScreen extends StatefulWidget {

@@ -1,9 +1,10 @@
+import 'package:Lets_Change/resources/firestore_methods.dart';
+import 'package:Lets_Change/utils/utils.dart';
+import 'package:Lets_Change/widgets/follow_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/resources/firestore_methods.dart';
-import 'package:instagram_clone/utils/utils.dart';
-import 'package:instagram_clone/widgets/follow_button.dart';
+
 
 import '../resources/auth_methods.dart';
 import 'login_screen.dart';
@@ -77,8 +78,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text(userData['username'] ?? ''
-        ),
+        title: Text(userData['username']),
         centerTitle: false,
 
       ),

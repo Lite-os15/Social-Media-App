@@ -1,13 +1,13 @@
+import 'package:Lets_Change/screens/side_menu.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:instagram_clone/screens/map_screen.dart';
-import 'package:instagram_clone/utils/colour.dart';
-import 'package:instagram_clone/utils/global_variables.dart';
-import 'package:instagram_clone/widgets/post_card.dart';
-import 'package:instagram_clone/screens/side_menu.dart';
+
+import '../widgets/post_card.dart';
+import 'map_screen.dart';
+
 
 
 class FeedScreen extends StatelessWidget {

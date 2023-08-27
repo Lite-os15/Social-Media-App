@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/providers/user_provider.dart';
-import 'package:instagram_clone/utils/global_variables.dart';
+
 import 'package:provider/provider.dart';
+
+import '../providers/user_provider.dart';
+import '../utils/global_variables.dart';
 
 
 

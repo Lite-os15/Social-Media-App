@@ -20,11 +20,13 @@ class _MapScreenState extends State<MapScreen> {
   @override
   void initState() {
     super.initState();
+
     //THIS FUNCTION FETCHES ALL THE POST DATA FROM FIRESTORE
     getPostData();
     // THIS FUNCTION GET THE CURRENT LOCATION OF THE USER
     getCurrentPos();
   }
+
 
   @override
   Widget build(BuildContext context) {

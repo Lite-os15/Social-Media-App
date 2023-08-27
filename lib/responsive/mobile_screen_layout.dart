@@ -1,15 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/screens/activity_screen.dart';
-import 'package:instagram_clone/screens/add_post_screen.dart';
-import 'package:instagram_clone/screens/camera_screen.dart';
-import 'package:instagram_clone/screens/feed_screen.dart';
-import 'package:instagram_clone/screens/graph_screen.dart';
-import 'package:instagram_clone/screens/profile_screen.dart';
-import 'package:instagram_clone/screens/search_screen.dart';
-import 'package:instagram_clone/utils/colour.dart';
-import 'package:instagram_clone/utils/global_variables.dart';
+
 import 'package:provider/provider.dart';
+
+import '../screens/activity_screen.dart';
+import '../screens/camera_screen.dart';
+import '../screens/feed_screen.dart';
+import '../screens/graph_screen.dart';
+import '../screens/search_screen.dart';
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({Key? key}) : super(key: key);

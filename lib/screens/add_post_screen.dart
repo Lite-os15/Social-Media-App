@@ -1,15 +1,18 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/models/user.dart';
-import 'package:instagram_clone/providers/user_provider.dart';
-import 'package:instagram_clone/resources/firestore_methods.dart';
-import 'package:instagram_clone/screens/feed_screen.dart';
-import 'package:instagram_clone/utils/utils.dart';
+
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import '../models/user.dart';
+import '../providers/user_provider.dart';
+import '../resources/firestore_methods.dart';
+import '../utils/utils.dart';
+import 'feed_screen.dart';
 
 
 class AddPostScreen extends StatefulWidget {
@@ -188,12 +191,35 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
 
           const Divider(),
+          CarouselSlider(
+            items: [
+              Container(
+                height: size.height / 2.0,
+                color: Colors.pinkAccent,
+                child: Image.file(File(CameraPic.path)),
+              ),
 
-          Container(
-            height: size.height /2.2,
-            color: Colors.pinkAccent,
-            child: Image.file(File(CameraPic.path)),
+              Container(
+                height: size.height / 2.0,
+                color: Colors.blueAccent,
+                child: Image.file(File(CameraPic.path)),
+              ),
+              Container(
+                height: size.height / 2.0,
+                color: Colors.greenAccent,
+                child: Image.file(File(CameraPic.path)),
+              ),
+
+            ],
+            options: CarouselOptions(),
           ),
+
+          // Container(
+          //
+          //   height: size.height /2.2,
+          //   color: Colors.pinkAccent,
+          //   child: Image.file(File(CameraPic.path)),
+          // ),
 
           Container(
             child: Chip(

@@ -1,15 +1,15 @@
+import 'package:Lets_Change/models/user.dart';
+import 'package:Lets_Change/providers/user_provider.dart';
+import 'package:Lets_Change/utils/utils.dart';
+import 'package:Lets_Change/widgets/like_animation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/models/user.dart';
-import 'package:instagram_clone/providers/user_provider.dart';
-import 'package:instagram_clone/resources/firestore_methods.dart';
-import 'package:instagram_clone/screens/comments_screen.dart';
-import 'package:instagram_clone/utils/colour.dart';
-import 'package:instagram_clone/utils/utils.dart';
-import 'package:instagram_clone/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+
+import '../resources/firestore_methods.dart';
+import '../screens/comments_screen.dart';
 
 class PostCard extends StatefulWidget {
   final snap;
@@ -69,10 +69,7 @@ class _PostCardState extends State<PostCard> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(0),
-                    //     Widget buildClass(ClassModel user) => ListTile(
-                    //   onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => ClassHomeScreen(classData: user))),
-                    //   leading: user.photourl == '' ? CircleAvatar(backgroundColor: Colors.grey.withOpacity(0.5),child: Icon(Icons.group, color: Colors.grey.shade700,),) :CircleAvatar(backgroundImage: NetworkImage(user.photourl),),
-                    // );
+
                     child: CircleAvatar(
                       radius: 25,
                       backgroundColor: Colors.grey,
@@ -124,6 +121,7 @@ class _PostCardState extends State<PostCard> {
                                   .map(
                                     (e) => InkWell(
                                       onTap: () async {
+                                        // showDialogBox(context);
                                         if (FirebaseAuth.instance.currentUser !=
                                             null) {
                                           FireStoreMethods()
@@ -200,7 +198,7 @@ class _PostCardState extends State<PostCard> {
                       ),
                       onEnd: () {
                         setState(() {
-                          isLikeAnimating = true;
+                          isLikeAnimating = false;
                         });
                       },
                       child: const Icon(
@@ -322,4 +320,26 @@ class _PostCardState extends State<PostCard> {
       ),
     );
   }
+
+
+  void showDialogBox(BuildContext context){
+    AlertDialog(
+      title: Center(child: Text('Do you want to Delete?')),
+      // titlePadding: EdgeInsetsGeometry.infinity,
+      elevation: 15,
+      actionsAlignment: MainAxisAlignment.spaceBetween,
+
+      actions: [
+        ElevatedButton(
+            onPressed: () {},
+            child: Text('Yes')
+        ),
+        ElevatedButton(onPressed: (){},
+            child: Text('No')),
+      ],
+    );
+
+  }
+
+
 }

@@ -1,11 +1,11 @@
+import 'package:Lets_Change/screens/login_screen.dart';
+import 'package:Lets_Change/screens/user_details_screen.dart';
+import 'package:Lets_Change/utils/colour.dart';
+import 'package:Lets_Change/utils/utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'package:instagram_clone/screens/login_screen.dart';
-import 'package:instagram_clone/screens/user_details_screen.dart';
-import 'package:instagram_clone/utils/colour.dart';
-import 'package:instagram_clone/utils/utils.dart';
 
 
 class SignUpScreen extends StatefulWidget {
@@ -218,7 +218,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   onTap: () {
                     if (_image == null) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text("Empty field(image)")));
+                          content: Text("Empty field(imageC)")));
                     } else if (_usernameController.text.isNotEmpty &&
                         _emailController.text.isNotEmpty &&
                         _passwordController.text.isNotEmpty &&
@@ -300,9 +300,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     );
   }
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty<bool>('_isLoading', _isLoading));
-  }
+  // @override
+  // void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  //   super.debugFillProperties(properties);
+  //   properties.add(DiagnosticsProperty<bool>('_isLoading', _isLoading));
+  // }
 }

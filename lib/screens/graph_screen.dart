@@ -1,8 +1,9 @@
+import 'package:Lets_Change/widgets/2nd_tab.dart';
+import 'package:Lets_Change/widgets/3rd_tab.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/widgets/1st_tab.dart';
-import 'package:instagram_clone/widgets/2nd_tab.dart';
-import 'package:instagram_clone/widgets/3rd_tab.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
+
+import '../widgets/1st_tab.dart';
+
 
 class GraphScreen extends StatefulWidget {
   const GraphScreen({Key? key}) : super(key: key);
@@ -25,15 +26,16 @@ class _GraphScreenState extends State<GraphScreen> {
 
         body: Column(
           children: [
-            TabBar(tabs: [
+            TabBar(
+              tabs: [
               Tab(
-                icon: Icon(Icons.home, color: Colors.black,),
+                child: Text('Your Muncipal Corporation',style: TextStyle(color: Colors.black),),
               ),
               Tab(
-                icon: Icon(Icons.home, color: Colors.black,),
+                child: Text('Your Vote',style: TextStyle(color: Colors.black),),
               ),
               Tab(
-                icon: Icon(Icons.home, color: Colors.black,),
+                child: Text('Leaderboard',style: TextStyle(color: Colors.black),),
               ),
             ],
             ),

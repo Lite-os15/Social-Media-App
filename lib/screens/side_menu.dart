@@ -1,12 +1,9 @@
+import 'package:Lets_Change/screens/profile_screen.dart';
+import 'package:Lets_Change/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/screens/profile_screen.dart';
-import 'package:instagram_clone/utils/utils.dart';
-import 'package:provider/provider.dart';
 
-import '../models/user.dart';
-import '../providers/user_provider.dart';
 import '../resources/auth_methods.dart';
 import '../widgets/follow_button.dart';
 import 'login_screen.dart';

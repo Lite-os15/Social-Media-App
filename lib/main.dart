@@ -1,15 +1,16 @@
+import 'package:Lets_Change/providers/user_provider.dart';
+import 'package:Lets_Change/screens/login_screen.dart';
+import 'package:Lets_Change/utils/colour.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:instagram_clone/providers/user_provider.dart';
-import 'package:instagram_clone/responsive/mobile_screen_layout.dart';
-import 'package:instagram_clone/responsive/responsive_screen_layout.dart';
-import 'package:instagram_clone/responsive/web_screen_layout.dart';
-import 'package:instagram_clone/screens/login_screen.dart';
 
-import 'package:instagram_clone/utils/colour.dart';
 import 'package:provider/provider.dart';
+
+import 'responsive/mobile_screen_layout.dart';
+import 'responsive/responsive_screen_layout.dart';
+import 'responsive/web_screen_layout.dart';
 
 void main()  async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,7 +46,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Instagram',
         theme: ThemeData.light().copyWith(
-          scaffoldBackgroundColor: primaryColor    ,
+          scaffoldBackgroundColor: primaryColor,
         ),
 
        // home:  const ResponsiveLayout(mobileScreenLayout: MobileScreenLayout(), webScreenLayout: WebScreenLayout()),

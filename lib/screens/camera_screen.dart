@@ -4,8 +4,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:instagram_clone/resources/firestore_methods.dart';
-import 'package:instagram_clone/screens/feed_screen.dart';
+
 import 'add_post_screen.dart';
 
 class CameraScreen extends StatefulWidget {
@@ -65,10 +64,10 @@ class _CameraScreenState extends State<CameraScreen> {
       });
       List<Placemark> placemarks =
       await placemarkFromCoordinates(value.latitude, value.longitude);
-      // setState(() {
-      //   String address =
-      //       "${placemarks[0].subAdministrativeArea!}, ${placemarks[0].administrativeArea!}";
-      // });
+      setState(() {
+        String address =
+            "${placemarks[0].subAdministrativeArea!}, ${placemarks[0].administrativeArea!}";
+      });
     }).catchError((error) {
       print("Error $error");
     });

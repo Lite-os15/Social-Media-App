@@ -13,7 +13,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>instagram_clone</string>
+	<string>Let's Change</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -55,6 +55,8 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
     <string>Photo Library Usage</string>
+   <key>com.apple.security.files.user-selected.read-only</key>
+     <true/>
     <key>NSCameraUsageDescription</key>
         <string>Camera Usage</string>
         <key>NSMicrophoneUsageDescription</key>
