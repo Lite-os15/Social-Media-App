@@ -1,8 +1,11 @@
 import 'package:Lets_Change/resources/firestore_methods.dart';
+import 'package:Lets_Change/screens/edit_profile.dart';
+import 'package:Lets_Change/screens/qr_screen.dart';
 import 'package:Lets_Change/utils/utils.dart';
 import 'package:Lets_Change/widgets/follow_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
@@ -72,46 +75,96 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final double coverHeight = MediaQuery.of(context).size.height * 0.2;
-    final double profileHeight = MediaQuery.of(context).size.height * 0.15;
-    final double avatarRadius = 45;
+    final double profileHeight = MediaQuery.of(context).size.height * 0.06;
+    const double avatarRadius = 45;
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.green,
-        title: Text(userData['username']),
+        title: Text(userData['username']! ),
         centerTitle: false,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: InkWell(
+              onTap:() => Navigator.of(context).push(MaterialPageRoute(builder: (context) => EditProfile())),
+                child: Icon(Icons.edit)),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => QRScreen())),
+                child: Icon(CupertinoIcons.qrcode)),
+          ),
+        ],
 
       ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              height: coverHeight,
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: NetworkImage(
-                    'https://images.unsplash.com/photo-1682685797736-dabb341dc7de?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
-                  ),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
             Stack(
+              clipBehavior: Clip.none,
               children: [
-                Row(
+                Container(
+                  height: coverHeight,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(
+                        'https://images.unsplash.com/photo-1682685797736-dabb341dc7de?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80',
+                      ),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  top: coverHeight - avatarRadius,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: Container(
+                      height:avatarRadius * 2,
+                      width: avatarRadius * 2,
+                      decoration: BoxDecoration(
+                        color: Colors.grey,
+
+                        image: DecorationImage(fit: BoxFit.cover,
+                          image: NetworkImage(userData['photoUrl'] ?? 'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=')
+                        ),
+                        shape: BoxShape.circle,
+                        border: Border.all(
+                            color:Colors.white,width: 3
+                        )
+                      ),
+                      // radius: avatarRadius,
+                      // backgroundColor: Colors.grey.shade800,
+                      // backgroundImage: NetworkImage(
+                      //   userData['photoUrl'] ?? 'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=',
+                      // ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+
+              SizedBox(height: avatarRadius,),
+
+              Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors:[Colors.green, Colors.lightGreenAccent],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+
+                  )
+                ),
+                // color: Colors.lightBlueAccent,
+                child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: CircleAvatar(
-                        radius: avatarRadius,
-                        backgroundColor: Colors.grey.shade800,
-                        backgroundImage: NetworkImage(
-                          userData['photoUrl'] ?? 'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI=',
-                        ),
-                      ),
-                    ),
+                    // Padding(
+                    //   padding: const EdgeInsets.all(8.0),
+                    //   child:
+                    // ),
                     const SizedBox(width: 16),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,7 +183,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       text: 'Sign Out',
                       backgroundColor:
                       Colors.black12,
-                      textColor: Colors.white,
+                      textColor: Colors.black,
                       borderColor: Colors.grey,
                       function: () async {
                         await AuthMethods().signOut();
@@ -166,7 +219,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         : FollowButton(
                       text: 'Follow',
                       backgroundColor: Colors.blue,
-                      textColor: Colors.white,
+                      textColor: Colors.black,
                       borderColor: Colors.blue,
                       function: () async {
                         await FireStoreMethods()
@@ -184,13 +237,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     ),
                     const Padding(
                       padding: EdgeInsets.only(top: 15, right: 10, left: 10),
-                      child: Icon(Icons.nature),
+                      child: Icon(CupertinoIcons.tree,color: Colors.green,),
                     )
                   ],
                 ),
-
-              ],
-            ),
+              ),
             Padding(
               padding: const EdgeInsets.only(bottom: 15.0, top: 15),
               child: Row(

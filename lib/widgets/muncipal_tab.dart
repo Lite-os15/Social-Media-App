@@ -25,7 +25,7 @@ class _FirstTabState extends State<FirstTab> {
   @override
   Widget build(BuildContext context) {
     return  Container(
-      color: Colors.green,
+      color: Colors.greenAccent,
 
       child: SfCircularChart(
 
@@ -37,7 +37,7 @@ class _FirstTabState extends State<FirstTab> {
             dataSource:_chartData,
             xValueMapper: (GDPData data,_)=>data.States,
             yValueMapper: (GDPData data,_)=> data.number,
-            dataLabelSettings: DataLabelSettings(isVisible: true),
+            dataLabelSettings: const DataLabelSettings(isVisible: true),
               enableTooltip:true,
               // maximumValue:4000,
           ),

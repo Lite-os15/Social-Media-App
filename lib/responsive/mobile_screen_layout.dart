@@ -1,13 +1,12 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:provider/provider.dart';
 
 import '../screens/activity_screen.dart';
 import '../screens/camera_screen.dart';
 import '../screens/feed_screen.dart';
 import '../screens/graph_screen.dart';
 import '../screens/search_screen.dart';
+import '../widgets/floating_button.dart';
 
 class MobileScreenLayout extends StatefulWidget {
   const MobileScreenLayout({Key? key}) : super(key: key);
@@ -21,7 +20,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
   late PageController pageController;
 
   final List<Widget> screens = [
-    FeedScreen(),
+    const FeedScreen(),
     const SearchScreen(),
     const ActivityScreen(),
     const GraphScreen(),
@@ -45,6 +44,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
       resizeToAvoidBottomInset: false, // Add this line to prevent resizing
 
       body: PageView(
+        physics: const NeverScrollableScrollPhysics(),
         controller: pageController,
         onPageChanged: (int page) {
           setState(() {
@@ -53,8 +53,10 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         },
         children: screens,
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton:
+      FloatingActionButton(
         clipBehavior: Clip.none,
+
         onPressed: () => Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => const CameraScreen(),
@@ -64,6 +66,8 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
+        notchMargin: 5,
+        elevation: 10,
 
         height: MediaQuery.of(context).size.height *0.07,
         shape: const CircularNotchedRectangle(),

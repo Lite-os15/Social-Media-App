@@ -62,11 +62,6 @@ class _LikeAnimationState extends State<LikeAnimation>
   }
 
 
-  @override
-  void dispose() {
-    super.dispose();
-
-  }
 
 
   @override

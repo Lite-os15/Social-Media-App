@@ -13,6 +13,13 @@ class _CommentCardState extends State<CommentCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.symmetric(vertical: 5),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(15),
+        border:Border.all(
+          color: Colors.grey.withOpacity(0.1)
+        )
+      ),
       padding: const EdgeInsets.symmetric(vertical: 18,horizontal: 16,),
       child: Row(
         children: [
@@ -39,7 +46,7 @@ class _CommentCardState extends State<CommentCard> {
                       ),
                       TextSpan(
                         text: '  ${widget.snap['text']}',
-                        style: TextStyle(color: Colors.black)
+                        style: const TextStyle(color: Colors.black)
                       ),
                     ],
                   ),
@@ -47,7 +54,7 @@ class _CommentCardState extends State<CommentCard> {
                 Padding(padding: const EdgeInsets.only(top: 4),
                 child: Text(
                   DateFormat.yMMMd().format(widget.snap['datePublished'].toDate()),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 12,
                     fontWeight: FontWeight.w400,
                   ),

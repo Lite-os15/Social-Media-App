@@ -35,7 +35,7 @@ class _SecondTabState extends State<SecondTab> {
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(25),
-              boxShadow: [
+              boxShadow: const [
 
             BoxShadow(
             color: Colors.grey,

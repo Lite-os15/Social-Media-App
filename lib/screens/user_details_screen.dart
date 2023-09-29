@@ -6,7 +6,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:intl/intl.dart';
 
-import '../models/user.dart';
 import '../resources/auth_methods.dart';
 import '../responsive/mobile_screen_layout.dart';
 import '../responsive/responsive_screen_layout.dart';
@@ -121,7 +120,7 @@ class _IntroScreenState extends State<IntroScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           image: DecorationImage(
             image: NetworkImage(
               'https://images.unsplash.com/photo-1684399026406-da824e064d46?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDE0fDZzTVZqVExTa2VRfHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=1000&q=60',
@@ -136,7 +135,7 @@ class _IntroScreenState extends State<IntroScreen> {
               margin: EdgeInsets.only(
                 bottom: MediaQuery.of(context).size.height * 0.1,
               ),
-              child: Text(
+              child: const Text(
                 'Enter Your Birth Date',
                 style: TextStyle(
                   color: Colors.white,
@@ -163,11 +162,11 @@ class _IntroScreenState extends State<IntroScreen> {
                     });
                   }
                 },
-                child: Container(
+                child: SizedBox(
                   width: MediaQuery.of(context).size.width * 0.8,
                   child: TextFormField(
                     controller: _date,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       icon: Icon(
                         CupertinoIcons.calendar,
                       ),
@@ -180,21 +179,22 @@ class _IntroScreenState extends State<IntroScreen> {
                       if (value == null) {
                         return 'please enter username';
                       }
+                      return null;
                     },
                   ),
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             GestureDetector(
               onTap: () {
                 getLocation();
               },
-              child: Container(
+              child: SizedBox(
                 width: MediaQuery.of(context).size.width * 0.8,
                 child: TextFormField(
                   controller: _location,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     icon: Icon(
                       CupertinoIcons.location_solid,
                     ),
@@ -213,7 +213,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 if (_date.text.isEmpty || _location.text.isEmpty) {
@@ -226,7 +226,7 @@ class _IntroScreenState extends State<IntroScreen> {
                   signUpUser();
                 }
               },
-              child: Text("Let's change"),
+              child: const Text("Let's change"),
             ),
           ],
         ),

@@ -5,7 +5,6 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../models/user.dart';
@@ -14,16 +13,18 @@ import '../resources/firestore_methods.dart';
 import '../utils/utils.dart';
 import 'feed_screen.dart';
 
-
 class AddPostScreen extends StatefulWidget {
   final String lat;
   final String long;
   final XFile CameraPic;
   final String Address;
 
-  AddPostScreen({Key? key, required this.CameraPic, required this.Address,
-    required this.lat, required this.long
-  })
+  const AddPostScreen(
+      {Key? key,
+      required this.CameraPic,
+      required this.Address,
+      required this.lat,
+      required this.long})
       : super(key: key);
 
   @override
@@ -33,11 +34,12 @@ class AddPostScreen extends StatefulWidget {
 class _AddPostScreenState extends State<AddPostScreen> {
   var CameraPic;
   var Address;
-  final TextEditingController  _descriptionController =TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
   _AddPostScreenState(this.CameraPic, this.Address);
   bool _isLoading = false;
 
   Uint8List? _imageData;
+  String selectedOption = 'Select one option';
 
   Future<void> _readFile() async {
     final file = File(CameraPic!.path);
@@ -46,20 +48,22 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   // List<int> bytes = File(CameraPic).readAsBytesSync();
   void postImage(
-      String? uid,
-      String? username,
-      String? profImage,
-      String? Address,
-      String lat,
-      String long,
-      Uint8List? imageData,
-
-
-      )async{
+    String? uid,
+    String? username,
+    String? profImage,
+    String? Address,
+    String lat,
+    String long,
+    Uint8List? imageData,
+  ) async {
     setState(() {
-      _isLoading = true ;
+      _isLoading = true;
     });
-    if (uid != null && username != null && profImage != null && Address != null && imageData != null) {
+    if (uid != null &&
+        username != null &&
+        profImage != null &&
+        Address != null &&
+        imageData != null) {
       try {
         String res = await FireStoreMethods().uploadPost(
           _descriptionController.text,
@@ -68,9 +72,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
           username,
           profImage,
           Address,
-          lat ,
+          lat,
           long,
-
         );
         if (res == "success") {
           setState(() {
@@ -78,7 +81,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
           });
           showSnackBar('Posted!', context);
           // Navigator.pop(context);
-          Navigator.of(context).pop(MaterialPageRoute(builder: (context) => FeedScreen()));
+          Navigator.of(context)
+              .pop(MaterialPageRoute(builder: (context) => const FeedScreen()));
         } else {
           setState(() {
             _isLoading = false;
@@ -96,18 +100,13 @@ class _AddPostScreenState extends State<AddPostScreen> {
 
   //Make sure to update the method signature and null checks wherever you're calling the postImage method.
 
-
-
-
-
-
   //clear the image and return to the screen back
-  void clearImage(){
+  void clearImage() {
     setState(() {
-      _imageData =null;
+      _imageData = null;
     });
-
   }
+
   @override
   void initState() {
     super.initState();
@@ -115,28 +114,24 @@ class _AddPostScreenState extends State<AddPostScreen> {
     _readFile();
   }
 
-
   @override
   void dispose() {
     // TODO: implement dispose
     super.dispose();
-
   }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    final UserModel? user =Provider.of<UserProvider>(context).getUser;
-
+    final UserModel? user = Provider.of<UserProvider>(context).getUser;
 
     return Scaffold(
       appBar: AppBar(
-
         title: const Text('Create Post'),
-
         actions: [
           InkWell(
             child: TextButton(
-                onPressed:  () {
+                onPressed: () {
                   postImage(
                     user!.uid,
                     user.username,
@@ -149,44 +144,77 @@ class _AddPostScreenState extends State<AddPostScreen> {
                   // Navigator.of(context).pop(MaterialPageRoute(builder: (context) => FeedScreen()));
                   //Navigator.pop(context);
                 },
-                child: const Text('POST',style: TextStyle(color: Colors.white)
-                )
-            ),
+                child:
+                    const Text('POST', style: TextStyle(color: Colors.white))),
           ),
         ],
       ),
-      body:
-      Column(
+      body: Column(
         children: [
-          _isLoading? const LinearProgressIndicator() :
-          const Padding(
-              padding: EdgeInsets.only(top:0)
-          ),
-          const Divider(),
-          Row(
-              children:<Widget>[
-                const Align(heightFactor: 0,
-                  child: Align(alignment: Alignment.topLeft,
-                    child: CircleAvatar(radius: 30,
-                      backgroundColor: Colors.greenAccent,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(alignment: Alignment.topCenter,
-                    width: MediaQuery.of(context).size.width * 0.8,
-                    child: TextField(
-                      controller: _descriptionController,
-                      decoration: const InputDecoration(
-                        hintText: "Describe the Issue!!!",
-                        focusedBorder: OutlineInputBorder() ,
-                      ),
+          _isLoading
+              ? const LinearProgressIndicator()
+              : const Padding(padding: EdgeInsets.only(top: 0)),
 
+          Row(children: <Widget>[
+            const Align(
+              heightFactor: 0,
+              child: Align(
+                alignment: Alignment.topLeft,
+                child: Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Colors.greenAccent,
+                  ),
+                ),
+              ),
+            ),
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  child: TextField(
+                    maxLength: 500,
+                    controller: _descriptionController,
+                    decoration: const InputDecoration(
+                      hintText: "Describe the Issue!!!",
+                      focusedBorder: OutlineInputBorder(),
                     ),
                   ),
                 ),
-              ]
+              ),
+            ),
+          ]
+          ),
+
+          Align(
+            alignment: AlignmentDirectional.centerEnd,
+            child: DropdownButton<String>(
+              isExpanded: true,
+              hint: Text('Select Type Of Issue'),
+              padding: EdgeInsets.only(left: 68,right: 10),
+              // value: selectedOption,
+              onChanged: (String? newValue) {
+                setState(() {
+                  selectedOption = newValue!;
+                });
+              },
+              items: <String>[
+                'Waste',
+                'Street Light',
+                'Sewage',
+                'Potholes',
+                'Air Pollution',
+                'Public Places',
+                'Others'
+              ].map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
           ),
 
 
@@ -195,23 +223,24 @@ class _AddPostScreenState extends State<AddPostScreen> {
             items: [
               Container(
                 height: size.height / 2.0,
-                color: Colors.pinkAccent,
-                child: Image.file(File(CameraPic.path)),
-              ),
-
-              Container(
-                height: size.height / 2.0,
-                color: Colors.blueAccent,
+                width: double.infinity,
+                // color: Colors.pinkAccent,
                 child: Image.file(File(CameraPic.path)),
               ),
               Container(
                 height: size.height / 2.0,
-                color: Colors.greenAccent,
+                width: double.infinity,
+                // color: Colors.blueAccent,
                 child: Image.file(File(CameraPic.path)),
               ),
-
+              Container(
+                height: size.height / 2.0,
+                width: double.infinity,
+                // color: Colors.greenAccent,
+                child: Image.file(File(CameraPic.path)),
+              ),
             ],
-            options: CarouselOptions(),
+            options: CarouselOptions(aspectRatio: 1 / 1),
           ),
 
           // Container(
@@ -221,20 +250,13 @@ class _AddPostScreenState extends State<AddPostScreen> {
           //   child: Image.file(File(CameraPic.path)),
           // ),
 
-          Container(
-            child: Chip(
-              avatar: const Icon(Icons.location_on_outlined),
-              label: Text(Address),labelStyle: TextStyle(color: Colors.black87),
-            ),
+          Chip(
+            avatar: const Icon(Icons.location_on_outlined),
+            label: Text(Address),
+            labelStyle: const TextStyle(color: Colors.black87),
           ),
         ],
       ),
-
     );
-  }
-  @override
-  void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-    super.debugFillProperties(properties);
-    properties.add(DiagnosticsProperty('CameraPic', CameraPic));
   }
 }

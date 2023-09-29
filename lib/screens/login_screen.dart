@@ -8,7 +8,6 @@ import 'package:Lets_Change/utils/colour.dart';
 import 'package:Lets_Change/utils/utils.dart';
 import 'package:Lets_Change/widgets/text_field_input.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 
 
@@ -73,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(height: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             image: DecorationImage(fit: BoxFit.fill ,
               image: NetworkImage(
               'https://images.unsplash.com/photo-1439853949127-fa647821eba0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80'
@@ -96,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   fontStyle: FontStyle.italic,
 
                 ),),
-                SizedBox(height: 120,),
+                const SizedBox(height: 120,),
                 // Flexible(child: Container(),flex: 2),
                 //svg image
                 // Image.asset('assets/images/button1.png',color: primaryColor,height: 64,),
@@ -152,10 +151,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                   Container(
-                        child: const Text("New User?"),
                         padding: const EdgeInsets.symmetric(
                           vertical: 8,
                         ),
+                        child: const Text("New User?"),
                       ),
 
                       GestureDetector(

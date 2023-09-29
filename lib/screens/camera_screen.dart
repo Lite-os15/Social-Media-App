@@ -1,9 +1,10 @@
 import 'dart:typed_data';
 
-import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'add_post_screen.dart';
 
@@ -15,18 +16,10 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
-  late List<CameraDescription> cameras;
-  CameraController? cameraController;
-  int direction = 0;
   double? lat;
-
   double? long;
 
-  @override
-  void initState() {
-    startCamera(0);
-    super.initState();
-  }
+  final ImagePicker _picker = ImagePicker();
 
   Future<Position> _determinePosition() async {
     bool serviceEnabled;
@@ -51,7 +44,8 @@ class _CameraScreenState extends State<CameraScreen> {
     }
 
     return await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
+      desiredAccuracy: LocationAccuracy.high,
+    );
   }
 
   void getLatLong() {
@@ -73,126 +67,105 @@ class _CameraScreenState extends State<CameraScreen> {
     });
   }
 
-  void startCamera(int direction) async {
-    cameras = await availableCameras();
 
-    cameraController = CameraController(
-      cameras[direction],
-      ResolutionPreset.high,
-      enableAudio: false,
-    );
-    await cameraController!.initialize().then((value) {
-      if (!mounted) {
-        return;
+
+  Future<void> _pickImageFromCamera() async {
+    try {
+      final XFile? imagefile = await _picker.pickImage(
+        source: ImageSource.camera,
+        preferredCameraDevice: CameraDevice.rear, // Rear camera
+
+      );
+
+      if (imagefile != null) {
+
+        var file =await ImageCropper().cropImage(sourcePath: imagefile.path,aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1));
+        if(file != null){
+
+        // Uint8List bytes = await file.readAsBytes();
+        _determinePosition().then((value) async {
+          List<Placemark> placemarks =
+          await placemarkFromCoordinates(value.latitude, value.longitude);
+
+          String address =
+              "${placemarks[0].locality!}, ${placemarks[0].administrativeArea!}";
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => AddPostScreen(
+                CameraPic: imagefile,
+                Address: address,
+                lat: value.latitude.toString(),
+                long: value.longitude.toString(),
+              ),
+            ),
+          );
+          print("Print saved to ${imagefile.path}");
+        });
       }
-      setState(() {});
-    }).catchError((e) {
-      print(e);
-    });
+    }
+    }catch (e) {
+      print("Error picking image: $e");
+    }
   }
 
-  @override
-  void dispose() {
-    cameraController?.dispose();
-    super.dispose();
+
+
+  Future<void> _pickVideoFromCamera() async {
+    try {
+      final XFile? videoFile = await _picker.pickVideo(
+        source: ImageSource.camera,
+        preferredCameraDevice: CameraDevice.rear, // Rear camera
+        maxDuration: const Duration(seconds: 30), // Maximum video duration
+      );
+
+      if (videoFile != null) {
+        Uint8List bytes = await videoFile.readAsBytes();
+        _determinePosition().then((value) async {
+          List<Placemark> placemarks =
+          await placemarkFromCoordinates(value.latitude, value.longitude);
+
+          String address =
+              "${placemarks[0].locality!}, ${placemarks[0].administrativeArea!}";
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute(
+              builder: (context) => AddPostScreen(
+                CameraPic: videoFile,
+                Address: address,
+                lat: value.latitude.toString(),
+                long: value.longitude.toString(),
+              ),
+            ),
+          );
+          print("Video saved to ${videoFile.path}");
+        });
+      }
+    } catch (e) {
+      print("Error capturing video: $e");
+    }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
-    if (cameraController == null || !cameraController!.value.isInitialized) {
-      return const SizedBox();
-    }
     return Scaffold(
-      body: Stack(
-        children: [
-          CameraPreview(cameraController!),
-          GestureDetector(
-            onTap: () {
-              setState(() {
-                direction = direction == 0 ? 1 : 0;
-                startCamera(direction);
-              });
-            },
-            child: button(Icons.flip_camera_ios_outlined, Alignment.bottomLeft),
-          ),
-          GestureDetector(
-            onTap: () async {
-              await cameraController!
-                  .takePicture()
-                  .then((XFile? file) async {
-                Uint8List bytes = await file!.readAsBytes();
-
-                if (mounted) {
-                  if (file != null) {
-                    _determinePosition().then((value) async {
-                      List<Placemark> placemarks =
-                      await placemarkFromCoordinates(
-                          value.latitude, value.longitude);
-
-                      String address =
-                          "${placemarks[0].locality!}, ${placemarks[0].administrativeArea!}";
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => AddPostScreen(
-                            CameraPic: file,
-                            Address: address,
-                            lat: value.latitude.toString(),
-                            long: value.longitude.toString(),
-                          ),
-                        ),
-                      );
-                    });
-                    print("Print saved to ${file.path}");
-                  }
-                }
-              });
-            },
-            child: button(Icons.camera_alt_outlined, Alignment.bottomCenter),
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: FloatingActionButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                child: Icon(Icons.arrow_back),
-                backgroundColor: null,
-              ),
-            ),
-          ),
-        ],
+      appBar: AppBar(
+        title: Text('Camera Screen'),
       ),
-    );
-  }
-
-  Widget button(IconData icon, Alignment alignment) {
-    return Align(
-      alignment: alignment,
-      child: Container(
-        margin: const EdgeInsets.only(
-          left: 20,
-          bottom: 20,
-        ),
-        height: 50,
-        width: 50,
-        decoration: const BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black26,
-              offset: Offset(2, 2),
-              blurRadius: 10,
-            )
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            lat != null && long != null
+                ? Text('Latitude: $lat, Longitude: $long')
+                : Text('Getting Location...'),
+            SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: _pickImageFromCamera,
+              onLongPress: _pickVideoFromCamera,
+              child: Text('Take a Picture'),
+            ),
           ],
-        ),
-        child: Center(
-          child: Icon(
-            icon,
-            color: Colors.black,
-          ),
         ),
       ),
     );
