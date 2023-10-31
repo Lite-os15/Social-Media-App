@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ThirdTab extends StatefulWidget {
-  const ThirdTab({super.key});
+class Leaderboard extends StatefulWidget {
+  const Leaderboard({super.key});
 
   @override
-  State<ThirdTab> createState() => _ThirdTabState();
+  State<Leaderboard> createState() => _LeaderboardState();
 }
 
-class _ThirdTabState extends State<ThirdTab> {
+class _LeaderboardState extends State<Leaderboard> {
   @override
   Widget build(BuildContext context) {
     var list =['Navi Mumbai','Mumbai','Thane','Nashik','Solapur','Pune','Kolhapur','Nagpur','Latur','Sangli'];
@@ -17,17 +17,19 @@ class _ThirdTabState extends State<ThirdTab> {
          itemCount: 10,
          itemBuilder:(BuildContextcontext,index){
            return Container(
-             color: Colors.greenAccent.shade200,
-             height: MediaQuery.of(context).size.height * 0.1,
+             margin: EdgeInsets.symmetric(horizontal: 15),
+
+             height: MediaQuery.of(context).size.height * 0.2,
              child: Card(
-               // elevation: 20,
+               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+               elevation: 15,
                child: Padding(
                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                  child: Row(
                    mainAxisAlignment: MainAxisAlignment.start,
                    crossAxisAlignment: CrossAxisAlignment.center,
                    children: [
-                     Text('$index'),
+                     Text('${index+1}'),
                      const Padding(
                        padding: EdgeInsets.symmetric(horizontal: 12.0),
                        child: CircleAvatar(radius: 25,

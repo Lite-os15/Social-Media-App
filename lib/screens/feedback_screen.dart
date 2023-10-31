@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
     );
 
     // Extract the locality (city) from the placemarks
-    String locality = "${placemarks[0].street},${placemarks[0].postalCode},${placemarks[0].locality}${placemarks[0].administrativeArea}" ?? "N/A";
+    String locality = "${placemarks[0].street},${placemarks[0].postalCode},${placemarks[0].locality},${placemarks[0].administrativeArea}" ?? "N/A";
 
     // Update state with the current position and locality
     setState(() {
@@ -70,25 +70,25 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-        appBar: AppBar(
-          title: Text('Location Example'),
-        ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                'Latitude: ${_currentPosition?.latitude}',
-              ),
-              Text(
-                'Longitude: ${_currentPosition?.longitude}',
-              ),
-              Text(
-                'Locality: $_currentLocality',
-              ),
-            ],
-          ),
-        ),
+        // appBar: AppBar(
+        //   title: Text('Location Example'),
+        // ),
+        // body: Center(
+        //   child: Column(
+        //     mainAxisAlignment: MainAxisAlignment.center,
+        //     children: <Widget>[
+        //       Text(
+        //         'Latitude: ${_currentPosition?.latitude}',
+        //       ),
+        //       Text(
+        //         'Longitude: ${_currentPosition?.longitude}',
+        //       ),
+        //       Text(
+        //         'Locality: $_currentLocality',
+        //       ),
+        //     ],
+        //   ),
+        // ),
       ),
     );
   }

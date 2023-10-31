@@ -72,14 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(height: double.infinity,
-          decoration: const BoxDecoration(
-            image: DecorationImage(fit: BoxFit.fill ,
-              image: NetworkImage(
-              'https://images.unsplash.com/photo-1439853949127-fa647821eba0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=387&q=80'
-              ),
-            ),
 
-          ),
           padding: const EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
           child: SingleChildScrollView(

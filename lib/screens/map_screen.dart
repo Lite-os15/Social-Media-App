@@ -37,25 +37,42 @@ class _MapScreenState extends State<MapScreen> {
       
 
 
-        body: (_position == null) ? const Center(child: CircularProgressIndicator(),): Stack(
+        body:
+        Stack(
           children: [
-            FlutterMap(
-              options: MapOptions(
-                center: LatLng(_position!.latitude, _position!.longitude),
-                zoom: 17.0,
+            if (_position != null)
+              FlutterMap(
+                options: MapOptions(
+                  center: LatLng(_position!.latitude, _position!.longitude),
+                  zoom: 17.0,
+                ),
+                children: [
+                  TileLayer(
+                    // THE URL FOR OpenStreetView API.
+                    urlTemplate:
+                    "https://basemap.nationalmap.gov/arcgis/rest/services/USGSTopo/MapServer/tile/{z}/{y}/{x}",
+                    // subdomains: const ["a","b","c"],
+                  ),
+                  MarkerLayer(
+                    markers: markerList,
+                  ),
+                ],
+              )
+            else
+            // If _position is null, show a default map location
+              FlutterMap(
+                options: MapOptions(
+                  center: LatLng(19.0299202,73.0167709), // Use any default coordinates you prefer
+                  zoom: 15.0, // Set a default zoom level
+                ),
+                children: [
+                  TileLayer(
+                    // You can use a different tile source for the default map
+                    urlTemplate: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+                    // subdomains: const ["a","b","c"],
+                  ),
+                ],
               ),
-              children: [
-                TileLayer(
-                  // THE URL FOR OpenStreetView API.
-                  urlTemplate:
-                  "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-                // subdomains: const ["a","b","c"],
-                ),
-                MarkerLayer(
-                  markers: markerList,
-                ),
-              ],
-            ),
             Column(mainAxisSize: MainAxisSize.min,
               children: [
                 Padding(
@@ -186,8 +203,8 @@ class _MapScreenState extends State<MapScreen> {
         var snapshot = element.docs[i].data();
         var marker = Marker(
           width: 50,height: 50,
-          point: LatLng(19.0760,72.8777
-              // snapshot['lat'], snapshot['long']
+          point: LatLng(
+              snapshot['lat'], snapshot['long']
           ),
           builder: (ctx) => InkWell(
             onTap: () {_issueBottomSheet(context);

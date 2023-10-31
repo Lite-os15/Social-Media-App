@@ -8,6 +8,8 @@ import 'package:Lets_Change/utils/utils.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 
 import '../resources/auth_methods.dart';
 import '../widgets/follow_button.dart';
@@ -26,6 +28,8 @@ class SideMenu extends StatefulWidget {
 class _SideMenuState extends State<SideMenu> {
   var userData = {};
   bool isLoading =false;
+  Position? _currentPosition;
+  String _currentLocality = "";
 
   bool _isBlinking = true;
   Color _chipColor = Colors.red; // Initial color is red
@@ -33,6 +37,7 @@ class _SideMenuState extends State<SideMenu> {
   @override
   void initState() {
     super.initState();
+    _determinePosition();
     getData();
 
     // Start the blinking animation
@@ -50,6 +55,58 @@ class _SideMenuState extends State<SideMenu> {
       }
     });
   }
+
+
+
+  Future<void> _determinePosition() async {
+    bool serviceEnabled;
+    LocationPermission permission;
+
+    // Check if location services are enabled
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return;
+    }
+
+    // Request location permissions
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return;
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied permanently, handle accordingly.
+      return;
+    }
+
+    // Get the current position
+    Position position = await Geolocator.getCurrentPosition(
+      desiredAccuracy: LocationAccuracy.high,
+    );
+
+    // Reverse geocode the position to get address information
+    List<Placemark> placemarks = await placemarkFromCoordinates(
+      position.latitude,
+      position.longitude,
+    );
+
+    // Extract the locality (city) from the placemarks
+    String locality = "${placemarks[0].street},${placemarks[0].postalCode},${placemarks[0].locality}${placemarks[0].administrativeArea}" ?? "N/A";
+
+    // Update state with the current position and locality
+    setState(() {
+      _currentPosition = position;
+      _currentLocality = locality;
+    });
+  }
+
+
+
+
+
 
 
   getData() async{
@@ -131,7 +188,7 @@ class _SideMenuState extends State<SideMenu> {
                           ),
                           const SizedBox(height: 16),
                            Text(
-                             userData['username'] ?? '' ,
+                             userData['username'] ?? 'Network Error' ,
                             style: const TextStyle(
                               color: Colors.black,
                               fontSize: 18,
@@ -151,7 +208,8 @@ class _SideMenuState extends State<SideMenu> {
                               backgroundColor: _chipColor,
                               avatar: Icon(Icons.location_on_outlined),
                               label: Text(
-                                userData['userLocation'] ?? '',
+                                '$_currentLocality',
+
                                 style: const TextStyle(
                                   color: Colors.black,
                                   fontSize: 18,

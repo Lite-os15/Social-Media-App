@@ -1,4 +1,4 @@
-
+//
 import 'package:Lets_Change/Admin_Dashboard/dashboard.dart';
 import 'package:Lets_Change/Admin_Dashboard/responsive.dart';
 import 'package:flutter/cupertino.dart';
@@ -8,8 +8,16 @@ import 'admin_sidemenu.dart';
 
 
 
-class MainScreen extends StatelessWidget {
-  const MainScreen({super.key});
+class MainScreen extends StatefulWidget {
+  final GlobalKey<NavigatorState> navigatorKey;
+  const MainScreen({super.key, required this.navigatorKey});
+
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
 
   @override
   Widget build(BuildContext context) {
@@ -25,14 +33,20 @@ class MainScreen extends StatelessWidget {
                 flex: 1,
                 // default flex = 1
                 // and it takes 1/6 part of the screen
-                child: AdminSideMenu(),
+                child: AdminSideMenu(navigatorKey: _navigatorKey,),
               ),
             Expanded(
                 flex: 5,
-
-                child: Dashboard()
-
-            )
+                child:
+                Navigator(
+                  key: _navigatorKey,
+                  onGenerateRoute: (settings) {
+                    return MaterialPageRoute(
+                      builder: (context) => Dashboard(),
+                    );
+                  },
+                ),
+            ),
 
           ],
         ),
@@ -40,8 +54,5 @@ class MainScreen extends StatelessWidget {
 
     );
   }
-
-
 }
-
 

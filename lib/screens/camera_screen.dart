@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -110,6 +111,54 @@ class _CameraScreenState extends State<CameraScreen> {
 
 
 
+
+
+  Future<void> _pickImageFromGallery() async {
+    try {
+      final XFile? imagefile = await _picker.pickImage(
+        source: ImageSource.gallery,
+        preferredCameraDevice: CameraDevice.rear, // Rear camera
+
+      );
+
+      if (imagefile != null) {
+
+        // var file =await ImageCropper().cropImage(sourcePath: imagefile.path,aspectRatio: CropAspectRatio(ratioX: 1, ratioY: 1));
+        // if(file != null) {
+
+
+
+            // Uint8List bytes = await file.readAsBytes();
+            _determinePosition().then((value) async {
+              List<Placemark> placemarks =
+              await placemarkFromCoordinates(value.latitude, value.longitude);
+
+              String address =
+                  "${placemarks[0].locality!}, ${placemarks[0]
+                  .administrativeArea!}";
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) =>
+                      AddPostScreen(
+                        CameraPic: imagefile,
+
+                        Address: address,
+                        lat: value.latitude.toString(),
+                        long: value.longitude.toString(),
+                      ),
+                ),
+              );
+              print("Print saved to ${imagefile.path}");
+            });
+
+        // }
+      }
+    }catch (e) {
+      print("Error picking image: $e");
+    }
+  }
+
+
   Future<void> _pickVideoFromCamera() async {
     try {
       final XFile? videoFile = await _picker.pickVideo(
@@ -146,6 +195,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
 
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -153,20 +203,50 @@ class _CameraScreenState extends State<CameraScreen> {
         title: Text('Camera Screen'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            lat != null && long != null
-                ? Text('Latitude: $lat, Longitude: $long')
-                : Text('Getting Location...'),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _pickImageFromCamera,
-              onLongPress: _pickVideoFromCamera,
-              child: Text('Take a Picture'),
-            ),
-          ],
-        ),
+        child: Card(
+          elevation: 15,
+          clipBehavior: Clip.hardEdge,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: ElevatedButton(onPressed: _pickVideoFromCamera, child: Text('Take a Video')),
+              ),
+
+                  Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: ElevatedButton(
+                      onPressed: _pickImageFromCamera,
+
+                      child: Text('Take a Picture'),
+                    ),
+                  ),
+              Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: ElevatedButton(
+                  onPressed: _pickImageFromGallery,
+
+                  child: Text('Pick From Gallery'),
+                ),
+              ),
+            ],
+          ),
+        )
+
+
+        // Column(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        //     ElevatedButton(onPressed: _pickVideoFromCamera, child: Text('Take a Video')),
+        //     SizedBox(height: 20),
+        //     ElevatedButton(
+        //       onPressed: _pickImageFromCamera,
+        //       onLongPress: _pickVideoFromCamera,
+        //       child: Text('Take a Picture'),
+        //     ),
+        //   ],
+        // ),
       ),
     );
   }

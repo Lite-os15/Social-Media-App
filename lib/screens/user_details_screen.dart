@@ -120,14 +120,14 @@ class _IntroScreenState extends State<IntroScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-            image: NetworkImage(
-              'https://images.unsplash.com/photo-1684399026406-da824e064d46?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDE0fDZzTVZqVExTa2VRfHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=1000&q=60',
-            ),
-            fit: BoxFit.fill,
-          ),
-        ),
+        // decoration: const BoxDecoration(
+        //   image: DecorationImage(
+        //     image: NetworkImage(
+        //       'https://images.unsplash.com/photo-1684399026406-da824e064d46?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDE0fDZzTVZqVExTa2VRfHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=1000&q=60',
+        //     ),
+        //     fit: BoxFit.fill,
+        //   ),
+        // ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -138,7 +138,7 @@ class _IntroScreenState extends State<IntroScreen> {
               child: const Text(
                 'Enter Your Birth Date',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.black,
                   fontSize: 25,
                   fontStyle: FontStyle.italic,
                   fontWeight: FontWeight.bold,
@@ -172,7 +172,7 @@ class _IntroScreenState extends State<IntroScreen> {
                       ),
                       border: OutlineInputBorder(),
                       labelText: 'Select Date',
-                      labelStyle: TextStyle(color: Colors.white),
+                      labelStyle: TextStyle(color: Colors.black),
                     ),
                     enabled: false,
                     validator: (value) {
@@ -200,7 +200,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     ),
                     border: OutlineInputBorder(),
                     labelText: 'Your Area',
-                    labelStyle: TextStyle(color: Colors.white),
+                    labelStyle: TextStyle(color: Colors.black),
                   ),
                   validator: (value) {
                     if (value == null) {

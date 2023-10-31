@@ -1,4 +1,4 @@
-import 'package:Lets_Change/widgets/your_vote_tab.dart';
+import 'package:Lets_Change/widgets/public_opinion.dart';
 import 'package:Lets_Change/widgets/muncipal_leaderboard_tab.dart';
 import 'package:flutter/material.dart';
 
@@ -55,7 +55,7 @@ class _GraphScreenState extends State<GraphScreen> {
                   children: [
                     FirstTab(),
                     SecondTab(),
-                    ThirdTab(),
+                    Leaderboard(),
                   ],
                 ),
               ),

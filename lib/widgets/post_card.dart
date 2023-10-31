@@ -1,7 +1,9 @@
 import 'package:Lets_Change/models/user.dart';
 import 'package:Lets_Change/providers/user_provider.dart';
 import 'package:Lets_Change/resources/firestore_methods.dart';
+import 'package:Lets_Change/screens/Issue_solve_screen.dart';
 import 'package:Lets_Change/screens/comments_screen.dart';
+import 'package:Lets_Change/screens/reply_post_screen.dart';
 import 'package:Lets_Change/utils/utils.dart';
 import 'package:Lets_Change/widgets/like_animation.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -14,7 +16,7 @@ import 'package:provider/provider.dart';
 
 class PostCard extends StatefulWidget {
   final snap;
-  const PostCard({Key? key,this.snap}) : super(key: key);
+  const PostCard({Key? key, this.snap}) : super(key: key);
 
   @override
   State<PostCard> createState() => _PostCardState();
@@ -26,9 +28,6 @@ class _PostCardState extends State<PostCard> {
 
   bool isLikeAnimating = false;
   int commentLen = 0;
-
-
-
 
   void changeButtonState() {
     setState(() {
@@ -54,7 +53,6 @@ class _PostCardState extends State<PostCard> {
     });
   }
 
-
   @override
   void initState() {
     getComments();
@@ -77,17 +75,14 @@ class _PostCardState extends State<PostCard> {
     // });
   }
 
-
   @override
   Widget build(BuildContext context) {
     final UserModel? user = Provider.of<UserProvider>(context).getUser;
 
     return Card(
-
-      margin: EdgeInsets.symmetric(horizontal:15,vertical: 10 ),
+      margin: EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       elevation: 15,
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(25)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
       child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -103,19 +98,18 @@ class _PostCardState extends State<PostCard> {
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-             // crossAxisAlignment: CrossAxisAlignment.center,
+            // crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Row(
                 // crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.only(left: 8.0,right: 8,top: 8),
+                    padding: const EdgeInsets.only(left: 8.0, right: 8, top: 8),
                     child: CircleAvatar(
                       radius: 30,
                       backgroundColor: CupertinoColors.systemGrey2,
-                      backgroundImage: NetworkImage(
-                          widget.snap['profImage'] ?? 'https://www.pngitem.com/pimgs/m/504-5040528_empty-profile-picture-png-transparent-png.png'
-                      ),
+                      backgroundImage: NetworkImage(widget.snap['profImage'] ??
+                          'https://www.pngitem.com/pimgs/m/504-5040528_empty-profile-picture-png-transparent-png.png'),
                     ),
                   ),
                   Column(
@@ -168,7 +162,9 @@ class _PostCardState extends State<PostCard> {
                       icon: const Icon(Icons.more_vert))
                 ],
               ),
-              Divider(thickness: 5,),
+              Divider(
+                thickness: 5,
+              ),
               // RichText(
               //   text: TextSpan(children: <TextSpan>[
               //     TextSpan(text: 'UserName '),
@@ -179,7 +175,8 @@ class _PostCardState extends State<PostCard> {
               //   ]),
               // ),
               Padding(
-                padding: const EdgeInsets.only(left: 10.0,right: 10,bottom: 10),
+                padding:
+                    const EdgeInsets.only(left: 10.0, right: 10, bottom: 10),
                 child: Text(widget.snap['description']),
               ),
               Column(
@@ -201,8 +198,8 @@ class _PostCardState extends State<PostCard> {
                           decoration: BoxDecoration(
                               image: DecorationImage(
                                 fit: BoxFit.fill,
-                                image: NetworkImage(
-                                    widget.snap['postUrl'] ?? ''),
+                                image:
+                                    NetworkImage(widget.snap['postUrl'] ?? ''),
                               ),
                               color: Colors.grey.shade300),
                           height: 300,
@@ -232,24 +229,18 @@ class _PostCardState extends State<PostCard> {
                     ),
                   ),
 
-
-
-
-
                   //Like Share and Comment button
                   Padding(
-                    padding:
-                        const EdgeInsets.only(top: 5, bottom: 8),
+                    padding: const EdgeInsets.only(top: 5, bottom: 8),
                     child: Row(
-                      mainAxisAlignment:
-                          MainAxisAlignment.spaceAround,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
                       // mainAxisSize: MainAxisSize.min,
                       children: [
                         Column(
-
                           children: [
                             LikeAnimation(
-                              isAnimating: widget.snap['likes'].contains(user?.uid),
+                              isAnimating:
+                                  widget.snap['likes'].contains(user?.uid),
                               smallLike: true,
                               child: IconButton(
                                 onPressed: () async {
@@ -260,27 +251,25 @@ class _PostCardState extends State<PostCard> {
                                 },
                                 icon: widget.snap['likes'].contains(user?.uid)
                                     ? const Icon(
-                                  Icons.energy_savings_leaf,
-                                  color: Colors.green,
-                                )
+                                        Icons.energy_savings_leaf,
+                                        color: Colors.green,
+                                      )
                                     : const Icon(
-                                  Icons.energy_savings_leaf_outlined,
-                                ),
+                                        Icons.energy_savings_leaf_outlined,
+                                      ),
                               ),
                             ),
-
                             Text('${widget.snap['likes'].length} ',
-                             style: Theme.of(context).textTheme.bodyMedium),
-
+                                style: Theme.of(context).textTheme.bodyMedium),
                           ],
                           mainAxisSize: MainAxisSize.min,
-
                         ),
                         // SizedBox(width: 40,),
                         Column(
                           children: [
                             IconButton(
-                              onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                              onPressed: () =>
+                                  Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) => CommentsScreen(
                                   snap: widget.snap,
                                 ),
@@ -309,8 +298,7 @@ class _PostCardState extends State<PostCard> {
                   ),
                   //TODO:This onTap function is temporary till backend is not connected at user side
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 15.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 15.0),
                     child: MaterialButton(
                       onPressed: changeButtonState,
                       child: Text(buttonText),
@@ -326,32 +314,37 @@ class _PostCardState extends State<PostCard> {
                     DateFormat.yMMMd()
                         .format(widget.snap['datePublished'].toDate()),
                     style:
-                    const TextStyle(fontSize: 16, color: Colors.blueGrey),
+                        const TextStyle(fontSize: 16, color: Colors.blueGrey),
                   ),
 
                   SizedBox(
                     height: 5,
                   ),
-                  Divider(thickness: 3,),
 
-                  Text(
-                    'View comments',
-                    style: TextStyle(fontSize: 18),
+                  Divider(
+                    thickness: 3,
+                    height: 0,
+                  ),
+
+                  TextButton(
+                    child: Text(
+                      'Mark as Solved',
+                      style: TextStyle(fontSize: 18),
+                    ),
+                    onPressed: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ReplyPostScreen(snap: widget.snap,))),
                   ),
                   SizedBox(
-                    height: 20,
+                    height: 5,
                   ),
                 ],
               ),
             ],
           )),
     );
-
-
-
   }
-
-
 
   void _showDeleteDialog(BuildContext context) {
     showCupertinoDialog(
@@ -370,15 +363,13 @@ class _PostCardState extends State<PostCard> {
             CupertinoDialogAction(
               child: Text("Delete"),
               isDestructiveAction: true,
-    onPressed: () async {
-      // showDialogBox(context);
-      if (FirebaseAuth.instance.currentUser !=
-          null) {
-        FireStoreMethods()
-            .deletePost(widget.snap['postId']);
-        Navigator.of(context).pop();
-      }
-    },
+              onPressed: () async {
+                // showDialogBox(context);
+                if (FirebaseAuth.instance.currentUser != null) {
+                  FireStoreMethods().deletePost(widget.snap['postId']);
+                  Navigator.of(context).pop();
+                }
+              },
             ),
           ],
         );

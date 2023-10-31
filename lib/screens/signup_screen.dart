@@ -88,13 +88,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          decoration:const BoxDecoration(
-            image: DecorationImage(fit: BoxFit.cover,
-              image: NetworkImage(
-                'https://images.unsplash.com/photo-1684399026406-da824e064d46?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDE0fDZzTVZqVExTa2VRfHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=1000&q=60'
-              ),
-            ),
-          ),
+          // decoration:const BoxDecoration(
+          //   image: DecorationImage(fit: BoxFit.cover,
+          //     image: NetworkImage(
+          //       'https://images.unsplash.com/photo-1684399026406-da824e064d46?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDE0fDZzTVZqVExTa2VRfHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=1000&q=60'
+          //     ),
+          //   ),
+          // ),
           padding: const EdgeInsets.symmetric(horizontal: 32),
           width: double.infinity,
           height: double.infinity,
@@ -167,8 +167,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                     //text field input for password
                     TextFormField(controller: _passwordController,
+                      obscureText: true,
 
                       decoration: const InputDecoration(
+
                           label: Text('Enter Password'),
                         hintText: 'Atleast 6 character',
 
@@ -185,7 +187,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 TextFormField(controller: _bioController,
                   decoration:const InputDecoration(
-                    hintText: 'Enter bio',
+
+                    labelText: 'Enter bio',
 
                   )
 

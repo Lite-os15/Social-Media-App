@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dropdown_textfield/dropdown_textfield.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -37,9 +38,20 @@ class _AddPostScreenState extends State<AddPostScreen> {
   final TextEditingController _descriptionController = TextEditingController();
   _AddPostScreenState(this.CameraPic, this.Address);
   bool _isLoading = false;
+  late SingleValueDropDownController _cnt;
+
+
+
+
+  @override
+  void dispose() {
+    _cnt.dispose();
+
+    super.dispose();
+  }
 
   Uint8List? _imageData;
-  String selectedOption = 'Select one option';
+
 
   Future<void> _readFile() async {
     final file = File(CameraPic!.path);
@@ -80,9 +92,8 @@ class _AddPostScreenState extends State<AddPostScreen> {
             _isLoading = false;
           });
           showSnackBar('Posted!', context);
-          // Navigator.pop(context);
-          Navigator.of(context)
-              .pop(MaterialPageRoute(builder: (context) => const FeedScreen()));
+          Navigator.of(context).pop(MaterialPageRoute(builder: (context) => const FeedScreen()));
+          Navigator.pop(context);
         } else {
           setState(() {
             _isLoading = false;
@@ -112,13 +123,11 @@ class _AddPostScreenState extends State<AddPostScreen> {
     super.initState();
     _imageData = Uint8List(0);
     _readFile();
+    _cnt = SingleValueDropDownController();
+
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -188,60 +197,58 @@ class _AddPostScreenState extends State<AddPostScreen> {
           ]
           ),
 
-          Align(
-            alignment: AlignmentDirectional.centerEnd,
-            child: DropdownButton<String>(
-              isExpanded: true,
-              hint: Text('Select Type Of Issue'),
-              padding: EdgeInsets.only(left: 68,right: 10),
-              // value: selectedOption,
-              onChanged: (String? newValue) {
-                setState(() {
-                  selectedOption = newValue!;
-                });
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30),
+            child: DropDownTextField(
+              // initialValue: "name4",
+              controller: _cnt,
+              clearOption: true,
+              // enableSearch: true,
+              // dropdownColor: Colors.green,
+              searchDecoration: const InputDecoration(
+                  hintText: "enter your custom hint text here"),
+              validator: (value) {
+                if (value == null) {
+                  return "Required field";
+                } else {
+                  return null;
+                }
               },
-              items: <String>[
-                'Waste',
-                'Street Light',
-                'Sewage',
-                'Potholes',
-                'Air Pollution',
-                'Public Places',
-                'Others'
-              ].map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
+              dropDownItemCount: 6,
+
+              dropDownList: const [
+                DropDownValueModel(name: 'Waste', value: "Waste"),
+                DropDownValueModel(
+                    name: 'Street Light',
+                    value: "Street Light",
+                    ),
+                DropDownValueModel(name: 'Potholes', value: "Potholes"),
+                DropDownValueModel(
+                    name: 'Air Pollution',
+                    value: "Air Pollution",
+                    ),
+                DropDownValueModel(name: 'Public Places', value: "Public Places"),
+                DropDownValueModel(name: 'Others', value: "Others"),
+
+              ],
+              onChanged: (val) {},
             ),
           ),
 
 
+
           const Divider(),
-          CarouselSlider(
-            items: [
+
+
               Container(
                 height: size.height / 2.0,
                 width: double.infinity,
                 // color: Colors.pinkAccent,
                 child: Image.file(File(CameraPic.path)),
               ),
-              Container(
-                height: size.height / 2.0,
-                width: double.infinity,
-                // color: Colors.blueAccent,
-                child: Image.file(File(CameraPic.path)),
-              ),
-              Container(
-                height: size.height / 2.0,
-                width: double.infinity,
-                // color: Colors.greenAccent,
-                child: Image.file(File(CameraPic.path)),
-              ),
-            ],
-            options: CarouselOptions(aspectRatio: 1 / 1),
-          ),
+
+
+
 
           // Container(
           //

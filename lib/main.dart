@@ -33,6 +33,7 @@ void main()  async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -44,7 +45,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Instagram',
+        title: "Let's Change",
         theme: ThemeData.light().copyWith(
           scaffoldBackgroundColor: primaryColor,
         ),

@@ -53,18 +53,6 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         },
         children: screens,
       ),
-      floatingActionButton:
-      FloatingActionButton(
-        clipBehavior: Clip.none,
-
-        onPressed: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const CameraScreen(),
-          ),
-        ),
-        child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       bottomNavigationBar: BottomAppBar(
         notchMargin: 5,
         elevation: 10,
@@ -74,6 +62,7 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+
             IconButton(
               icon: const Icon(Icons.home),
               onPressed: () {
@@ -92,15 +81,20 @@ class _MobileScreenLayoutState extends State<MobileScreenLayout> {
                 pageController.jumpToPage(_page);
               },
             ),
-            IconButton(
-              icon: const Icon(Icons.notifications),
-              onPressed: () {
-                setState(() {
-                  _page = 2;
-                });
-                pageController.jumpToPage(_page);
-              },
-            ),
+            IconButton(onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => const CameraScreen(),
+              ),
+            ), icon: Icon(Icons.add)),
+            // IconButton(
+            //   icon: const Icon(Icons.notifications),
+            //   onPressed: () {
+            //     setState(() {
+            //       _page = 2;
+            //     });
+            //     pageController.jumpToPage(_page);
+            //   },
+            // ),
             IconButton(
               icon: const Icon(Icons.auto_graph),
               onPressed: () {

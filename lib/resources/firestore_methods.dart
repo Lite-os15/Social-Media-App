@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:Lets_Change/models/post.dart';
+import 'package:Lets_Change/models/reply_post.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:uuid/uuid.dart';
@@ -24,7 +25,7 @@ class FireStoreMethods {
     String res = "Some error occurred";
     try {
       String photoUrl =
-      await StorageMethods().uploadImageToStorage('posts', file, true);
+      await StorageMethods().uploadImageToStorage('replyposts', file, true);
       String postId = const Uuid().v1();
 
       // creates unique id based on time
@@ -143,4 +144,82 @@ class FireStoreMethods {
       print(e.toString());
     }
   }
+
+
+
+
+  Future<String> uploadReplyPost(
+      String postId,
+      String description,
+      Uint8List file,
+      String uid,
+      String username,
+      String profImage,
+      String address,
+      String lat,
+      String long,
+      ) async{
+    // asking uid here because we dont want to make extra calls to firebase auth when we can just get from our state management
+    String res = "Some error occurred";
+    try {
+      String photoUrl =
+      await StorageMethods().uploadImageToStorage('posts', file, true);
+      String replypostId = const Uuid().v1();
+
+      // creates unique id based on time
+
+
+
+      ReplyPost post = ReplyPost(
+        description: description,
+        uid: uid,
+        username: username,
+        likes: [],
+        postId: replypostId,
+        datePublished: DateTime.now(),
+        postUrl: photoUrl,
+        profImage: profImage,
+        address: address,
+        lat: lat,
+        long: long,
+      );
+      _firestore.collection('posts').doc(postId).collection('replypost').doc(replypostId).set(post.toJson());
+      res = "success";
+    } catch (err) {
+      res = err.toString();
+    }
+    return res;
+  }
+  // {
+  //   String res = "Some error occurred";
+  //   try {
+  //     if (text.isNotEmpty) {
+  //       // if the likes list contains the user uid, we need to remove it
+  //       String commentId = const Uuid().v1();
+  //       _firestore
+  //           .collection('posts')
+  //           .doc(postId)
+  //           .collection('comments')
+  //           .doc(commentId)
+  //           .set({
+  //         'profilePic': profilePic,
+  //         'name': name,
+  //         'uid': uid,
+  //         'text': text,
+  //         'commentId': commentId,
+  //         'datePublished': DateTime.now(),
+  //       });
+  //       res = 'success';
+  //     } else {
+  //       res = "Please enter text";
+  //     }
+  //   } catch (err) {
+  //     res = err.toString();
+  //   }
+  //   return res;
+  // }
+
+
+
+
 }

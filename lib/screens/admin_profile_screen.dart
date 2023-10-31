@@ -195,31 +195,24 @@ class _AdminProfileScreenState extends State<AdminProfileScreen> {
                   ],
                 ),
                 const Divider(),
-                FutureBuilder(
+                GridView.builder(
+                  shrinkWrap: true,
+                  itemCount: 10,
+                  gridDelegate:
+                  const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 3,
+                    crossAxisSpacing: 5,
+                    mainAxisSpacing: 1.5,
+                    childAspectRatio: 1,
+                  ),
+                  itemBuilder: (context, index) {
 
-                  builder: (context, snapshot) {
 
-
-                    return GridView.builder(
-                      shrinkWrap: true,
-                      itemCount: 10,
-                      gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 3,
-                        crossAxisSpacing: 5,
-                        mainAxisSpacing: 1.5,
-                        childAspectRatio: 1,
+                    return Container(
+                      child: Image(
+                        image: NetworkImage('https://images.unsplash.com/photo-1688408958818-87ab7f118246?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80'),
+                        fit: BoxFit.cover,
                       ),
-                      itemBuilder: (context, index) {
-
-
-                        return Container(
-                          child: Image(
-                            image: NetworkImage('https://images.unsplash.com/photo-1688408958818-87ab7f118246?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1887&q=80'),
-                            fit: BoxFit.cover,
-                          ),
-                        );
-                      },
                     );
                   },
                 )

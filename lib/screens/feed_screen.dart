@@ -39,8 +39,8 @@ class _FeedScreenState extends State<FeedScreen> with TickerProviderStateMixin {
         //height: 32,
         actions: [
           InkWell(
-              onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const NotificationScreen())),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const NotificationScreen())),
               child: const Padding(
                 padding: EdgeInsets.all(8.0),
                 child: Icon(Icons.notifications),
@@ -66,10 +66,16 @@ class _FeedScreenState extends State<FeedScreen> with TickerProviderStateMixin {
           children: [
             TabBar(tabs: [
               Tab(
-               child: Text('Nearby Issues',style: TextStyle(color: Colors.black),),
+                child: Text(
+                  'Nearby Issues',
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
               Tab(
-                child: Text('Friends Issues',style: TextStyle(color: Colors.black),),
+                child: Text(
+                  'Friends Issues',
+                  style: TextStyle(color: Colors.black),
+                ),
               )
             ]),
             Expanded(
