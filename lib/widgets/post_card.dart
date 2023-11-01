@@ -126,7 +126,7 @@ class _PostCardState extends State<PostCard> {
                     ],
                   ),
                   Spacer(),
-                  IconButton(
+                  (user?.uid != widget.snap['uid']) ? Container() : IconButton(
                       onPressed: () {
                         _showDeleteDialog(context);
                         // CupertinoAlertDialog(
@@ -297,10 +297,11 @@ class _PostCardState extends State<PostCard> {
                     ),
                   ),
                   //TODO:This onTap function is temporary till backend is not connected at user side
+                  // TODO: For temporary Fix i have set this to such that the current user cannot change this buttonState
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 15.0),
                     child: MaterialButton(
-                      onPressed: changeButtonState,
+                      onPressed: (user?.uid == widget.snap['uid']) ? () {} :changeButtonState,
                       child: Text(buttonText),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20),

@@ -158,111 +158,113 @@ class _AddPostScreenState extends State<AddPostScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          _isLoading
-              ? const LinearProgressIndicator()
-              : const Padding(padding: EdgeInsets.only(top: 0)),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            _isLoading
+                ? const LinearProgressIndicator()
+                : const Padding(padding: EdgeInsets.only(top: 0)),
 
-          Row(children: <Widget>[
-            const Align(
-              heightFactor: 0,
-              child: Align(
-                alignment: Alignment.topLeft,
+            Row(children: <Widget>[
+              const Align(
+                heightFactor: 0,
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Colors.greenAccent,
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
                 child: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Colors.greenAccent,
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.5,
-                  child: TextField(
-                    maxLength: 500,
-                    controller: _descriptionController,
-                    decoration: const InputDecoration(
-                      hintText: "Describe the Issue!!!",
-                      focusedBorder: OutlineInputBorder(),
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 0.5,
+                    child: TextField(
+                      maxLength: 500,
+                      controller: _descriptionController,
+                      decoration: const InputDecoration(
+                        hintText: "Describe the Issue!!!",
+                        focusedBorder: OutlineInputBorder(),
+                      ),
                     ),
                   ),
                 ),
               ),
+            ]
             ),
-          ]
-          ),
 
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30),
-            child: DropDownTextField(
-              // initialValue: "name4",
-              controller: _cnt,
-              clearOption: true,
-              // enableSearch: true,
-              // dropdownColor: Colors.green,
-              searchDecoration: const InputDecoration(
-                  hintText: "enter your custom hint text here"),
-              validator: (value) {
-                if (value == null) {
-                  return "Required field";
-                } else {
-                  return null;
-                }
-              },
-              dropDownItemCount: 6,
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 30),
+              child: DropDownTextField(
+                // initialValue: "name4",
+                controller: _cnt,
+                clearOption: true,
+                // enableSearch: true,
+                // dropdownColor: Colors.green,
+                searchDecoration: const InputDecoration(
+                    hintText: "enter your custom hint text here"),
+                validator: (value) {
+                  if (value == null) {
+                    return "Required field";
+                  } else {
+                    return null;
+                  }
+                },
+                dropDownItemCount: 6,
 
-              dropDownList: const [
-                DropDownValueModel(name: 'Waste', value: "Waste"),
-                DropDownValueModel(
-                    name: 'Street Light',
-                    value: "Street Light",
-                    ),
-                DropDownValueModel(name: 'Potholes', value: "Potholes"),
-                DropDownValueModel(
-                    name: 'Air Pollution',
-                    value: "Air Pollution",
-                    ),
-                DropDownValueModel(name: 'Public Places', value: "Public Places"),
-                DropDownValueModel(name: 'Others', value: "Others"),
+                dropDownList: const [
+                  DropDownValueModel(name: 'Waste', value: "Waste"),
+                  DropDownValueModel(
+                      name: 'Street Light',
+                      value: "Street Light",
+                      ),
+                  DropDownValueModel(name: 'Potholes', value: "Potholes"),
+                  DropDownValueModel(
+                      name: 'Air Pollution',
+                      value: "Air Pollution",
+                      ),
+                  DropDownValueModel(name: 'Public Places', value: "Public Places"),
+                  DropDownValueModel(name: 'Others', value: "Others"),
 
-              ],
-              onChanged: (val) {},
-            ),
-          ),
-
-
-
-          const Divider(),
-
-
-              Container(
-                height: size.height / 2.0,
-                width: double.infinity,
-                // color: Colors.pinkAccent,
-                child: Image.file(File(CameraPic.path)),
+                ],
+                onChanged: (val) {},
               ),
+            ),
+
+
+
+            const Divider(),
+
+
+                Container(
+                  height: size.height / 2.0,
+                  width: double.infinity,
+                  // color: Colors.pinkAccent,
+                  child: Image.file(File(CameraPic.path)),
+                ),
 
 
 
 
-          // Container(
-          //
-          //   height: size.height /2.2,
-          //   color: Colors.pinkAccent,
-          //   child: Image.file(File(CameraPic.path)),
-          // ),
+            // Container(
+            //
+            //   height: size.height /2.2,
+            //   color: Colors.pinkAccent,
+            //   child: Image.file(File(CameraPic.path)),
+            // ),
 
-          Chip(
-            avatar: const Icon(Icons.location_on_outlined),
-            label: Text(Address),
-            labelStyle: const TextStyle(color: Colors.black87),
-          ),
-        ],
+            Chip(
+              avatar: const Icon(Icons.location_on_outlined),
+              label: Text(Address),
+              labelStyle: const TextStyle(color: Colors.black87),
+            ),
+          ],
+        ),
       ),
     );
   }

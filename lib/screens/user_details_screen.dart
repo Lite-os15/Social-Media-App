@@ -119,15 +119,8 @@ class _IntroScreenState extends State<IntroScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        // decoration: const BoxDecoration(
-        //   image: DecorationImage(
-        //     image: NetworkImage(
-        //       'https://images.unsplash.com/photo-1684399026406-da824e064d46?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHx0b3BpYy1mZWVkfDE0fDZzTVZqVExTa2VRfHxlbnwwfHx8fHw%3D&auto=format&fit=crop&w=1000&q=60',
-        //     ),
-        //     fit: BoxFit.fill,
-        //   ),
-        // ),
+      body: (_isLoading == true) ? Center(child: CircularProgressIndicator(),):Container(
+
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

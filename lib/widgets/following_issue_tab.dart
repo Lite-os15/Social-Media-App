@@ -100,7 +100,7 @@ class FollowingIssueTabState extends State<FollowingIssueTab>
                 SizedBox(
                   width: holeSize,
                   child: Image.asset(
-                    'assets/hole.png',
+                    'assets/images/hole.png',
                     fit: BoxFit.fill,
                   ),
                 ),

@@ -221,7 +221,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   onTap: () {
                     if (_image == null) {
                       ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                          content: Text("Empty field(imageC)")));
+                          content: Text("Please add your profile Picture")));
                     } else if (_usernameController.text.isNotEmpty &&
                         _emailController.text.isNotEmpty &&
                         _passwordController.text.isNotEmpty &&

@@ -222,34 +222,6 @@ class _SideMenuState extends State<SideMenu> {
                       ),
                     ),
                   ),
-
-
-                  ListTile(
-                    leading: const Icon(Icons.groups),
-                    title: const Text('Members'),
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context)=> GroupScreen())),
-                  ),
-
-                  Divider(),
-                  ListTile(
-                    leading: const Icon(Icons.settings),
-                    title: const Text('Settings'),
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context)=> ChangePassword())),
-                  ),
-                  Divider(),
-                  ListTile(
-                    leading: const Icon(Icons.messenger_outline),
-                    title: const Text('Feedback'),
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (context)=> MyApp())),
-                  ),
-                  Divider(),
-                  ListTile(
-                    leading: const Icon(Icons.info),
-                    title: const Text('About'),
-                    onTap: () {},
-                  ),
-
-                  const Divider(),
                   ListTile(
                     title: FirebaseAuth.instance.currentUser!.uid ==
                         widget.uid
@@ -257,7 +229,7 @@ class _SideMenuState extends State<SideMenu> {
                       text: 'Sign Out',
                       backgroundColor:
                       Colors.green,
-                      textColor: Colors.black,
+                      textColor: Colors.grey.shade200,
                       borderColor: Colors.grey,
                       function: () async {
                         await AuthMethods().signOut();
